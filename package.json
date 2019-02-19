@@ -6,8 +6,6 @@
   "scripts": {
     "start": "node --inspect=7000 -r ts-node/register api/index.ts",
     "dev": "./node_modules/nodemon/bin/nodemon.js",
-    "deploy": "tsc && now && now alias",
-    "remove": "node ./scripts/remove.js p=zeis-test n=5",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
