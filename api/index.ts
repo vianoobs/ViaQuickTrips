@@ -3,7 +3,7 @@ import express = require('express');
 const app = express();
 
 app.get('/hello', (req: express.Request, res: express.Response) => {
-    res.send('Hello from the project root!')
+    res.send('Hello from the project root!!!')
 });
 
 app.get('*', (req: express.Request, res: express.Response) => {
@@ -44,5 +44,8 @@ app.use((err: any, req: express.Request, res: express.Response) => {
 
 app.set('port', process.env.port || 8080);
 
-// @ts-ignore
-app.listen();
+console.log("hello");
+
+let server = app.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + server.address()['port']);
+});
