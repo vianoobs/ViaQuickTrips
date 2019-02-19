@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "zeis-test",
+  "alias": "mnelmstest",
+  "builds": [
+    { "src": "api/index.js", "use": "@now/node-server" }
+  ]
+}
