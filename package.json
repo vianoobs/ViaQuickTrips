@@ -1,5 +1,5 @@
 {
-  "name": "zeis-test",
+  "name": "express-ts-starter",
   "version": "1.0.0",
   "description": "Test zeis platform",
   "main": "scripts/remove.js",
