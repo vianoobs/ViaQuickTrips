@@ -92,9 +92,18 @@ export class ViaTrip {
                     const stopTime = stopTimes[i];
                     const minutesUntilStop = this.findMinutesBewtweenNowAndApiTime(stopTime.arrivalTime, time);
                     const distance = this.calculateDistance(this.sourceLocation, this.desinationLocation, true);
-                    const walkingTime = this.distanceinKmToWalkingTimeInMin(distance);
-                    if (minutesUntilStop > 0 && minutesUntilStop < 45 ) {
-
+                    const walkingTime = this.distanceInKmToWalkingTimeInMin(distance);
+                    if (minutesUntilStop >= 0 && minutesUntilStop < 45 && walkingTime < minutesUntilStop) {
+                        trips.push({tripId: stopTime.tripId});
+                    }
+                    if (forward) {
+                        if (minutesUntilStop >= 45) {
+                            break;
+                        }
+                    } else if(!forward) {
+                        if (minutesUntilStop < 0) {
+                            break;
+                        }
                     }
                 }
                 return trips;
@@ -113,7 +122,7 @@ export class ViaTrip {
     //
     // }
     //
-    private distanceinKmToWalkingTimeInMin(distance: number): number {
+    private distanceInKmToWalkingTimeInMin(distance: number): number {
         return distance * 20;
     }
 
