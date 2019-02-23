@@ -9,9 +9,6 @@ const axios = require('axios');
 const app = express();
 const cors = require('cors');
 
-import apiKeys = require('../Config/config.js');
-
-
 let accessToken;
 
 interface IAuthReq {
@@ -71,13 +68,11 @@ app.use(bodyParser.json());
 //  Routes ----------------------------------------------
 
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
-    // console.log(JSON.stringify(req.body));
     superagent
         .get("https://api.yelp.com/v3/businesses/search")
         .set("Authorization", `bearer ${yelpApi}`)
         .query(paramReturn(req.body))
         .set("Authorization", `bearer ${yelpApi}`)
-        .query(paramReturn(req.body))
         .then(yelpRes => {
             res.send(JSON.parse(yelpRes.text));
         })
@@ -111,9 +106,6 @@ app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
     });
 });
 
-app.get('*', (req: express.Request, res: express.Response) => {
-    res.send('Nothing to see here! seriously')
-});
 app.post("/api/maps",(req, res) => {
     const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
     superagent

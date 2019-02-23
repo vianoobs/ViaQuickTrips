@@ -11,7 +11,6 @@ const config_js_1 = require("../Config/config.js");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
-const apiKeys = require("../Config/config.js");
 let accessToken;
 app.use(function (req, res, next) {
     // console.log('Time:', Date.now());
@@ -47,13 +46,11 @@ app.use(cors());
 app.use(bodyParser.json());
 //  Routes ----------------------------------------------
 app.post('/api/yelp', (req, res) => {
-    // console.log(JSON.stringify(req.body));
     superagent_1.default
         .get("https://api.yelp.com/v3/businesses/search")
         .set("Authorization", `bearer ${config_js_1.yelpApi}`)
         .query(paramReturn(req.body))
         .set("Authorization", `bearer ${config_js_1.yelpApi}`)
-        .query(paramReturn(req.body))
         .then(yelpRes => {
         res.send(JSON.parse(yelpRes.text));
     })
@@ -82,9 +79,6 @@ app.get("/api/all-routes/", (req, res) => {
         res.send(err);
         console.log(err);
     });
-});
-app.get('*', (req, res) => {
-    res.send('Nothing to see here! seriously');
 });
 app.post("/api/maps", (req, res) => {
     const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
