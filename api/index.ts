@@ -2,6 +2,7 @@ import express = require('express');
 import superagent from 'superagent';
 const axios = require('axios');
 const app = express();
+const cors = require('cors');
 
 let accessToken;
 
@@ -54,8 +55,14 @@ app.use(function (req: express.Request, res: express.Response, next) {
 
 });
 
-app.get('/hello', (req: express.Request, res: express.Response) => {
-    res.send('Hello from the project root!')
+app.use(cors());
+
+// app.use(bodyParser.json());
+
+app.post('/api/yelp', (req: express.Request, res: express.Response) => {
+    // console.log(JSON.stringify(req.body));
+    console.log(req);
+    res.send("donezo");
 
 });
 
