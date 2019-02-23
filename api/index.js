@@ -5,14 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const superagent_1 = __importDefault(require("superagent"));
+const bodyParser = require("body-parser");
+const axios = require('axios');
 const app = express();
+const cors = require('cors');
+const yelpApi = require("../Config/config.js");
 let accessToken;
 app.use(function (req, res, next) {
     // console.log('Time:', Date.now());
-    // Check req obj for any needed headers s
+    // Check req obj for any needed headers
     const token = req.header('access_token');
     if (token && token.length > 1) {
         accessToken = token;
+        res.setHeader('access_token', accessToken);
         next();
     }
     else {
@@ -36,13 +41,33 @@ app.use(function (req, res, next) {
         });
     }
 });
-app.get('/hello', (req, res) => {
-    res.send('Hello from the project root!');
+app.use(cors());
+app.use(bodyParser.json());
+//  Routes ----------------------------------------------
+app.post('/api/yelp', (req, res) => {
+    // console.log(JSON.stringify(req.body));
+    const reqParamObject = paramReturn(req.body);
+    superagent_1.default
+        .get("https://api.yelp.com/v3/businesses/search")
+        .set("Authorization", `bearer ${yelpApi.yelpApi}`)
+        .query(reqParamObject)
+        .then(yelpRes => res.send(JSON.parse(yelpRes.text)))
+        .catch(error => console.log(error));
 });
-app.get('*', (req, res) => {
-    res.send('Nothing to see here!');
+app.get("/api/all-routes/", (req, res) => {
+    superagent_1.default
+        .get("https://codegtfsapi.viainfo.net/api/v1/routes")
+        .set("Authorization", `bearer ${accessToken}`)
+        .set("Accept", "application/json")
+        .then(response => {
+        console.log("response: here");
+        res.send(JSON.parse(response.text)["result"]);
+    }).catch(err => {
+        console.log("error");
+        res.send(err);
+        console.log(err);
+    });
 });
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     let err = new Error('Not Found');
@@ -70,17 +95,18 @@ app.use((err, req, res) => {
         error: {}
     });
 });
-app.set('port', process.env.port || 8080);
-console.log("hello");
-let server = app.listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + server.address()['port']);
+//helper functions
+const paramReturn = reqParamObject => {
+    return {
+        latitude: reqParamObject["lat"] || "29.424122",
+        longitude: reqParamObject["long"] || "-98.493629",
+        radius: "8000",
+        category: reqParamObject["category"] || null,
+        price: reqParamObject["price"] || "4"
+    };
+};
+const port = process.env.port || 8081;
+app.listen(port, () => {
+    console.log("Skynet is active on " + port);
 });
-
-// const serverPort = process.env.port || 8080;
-// app.listen(serverPort, () => {
-//     console.log(`Skyknet Active on ${serverPort}`)
-// })
-
-
-
 //# sourceMappingURL=index.js.map
