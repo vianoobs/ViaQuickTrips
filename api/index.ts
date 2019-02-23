@@ -1,6 +1,8 @@
 import express = require('express');
 import superagent from 'superagent';
 import bodyParser = require("body-parser");
+import {ILocation, ViaTrip} from "./logic/ViaTrip";
+
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
@@ -45,13 +47,13 @@ app.use(function (req: express.Request, res: express.Response, next) {
             .post(url)
             .type("form")
             .send(authBody).then(authRes => {
-                const body = authRes.body as IAuthRes;
-                accessToken = body.access_token;
-                res.setHeader('access_token', accessToken);
-                next();
-            }).catch(err => {
-                console.log(err);
-            });
+            const body = authRes.body as IAuthRes;
+            accessToken = body.access_token;
+            res.setHeader('access_token', accessToken);
+            next();
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
 });
@@ -68,11 +70,15 @@ app.post('/api/yelp', (req: express.Request, res: express.Response) => {
 });
 
 app.get('/test', (req: express.Request, res: express.Response) => {
-    res.send('test')
-});
+    const source: ILocation = {lat: '29.427839', lon: '-98.494636'};
+    const destination: ILocation = {lat: '29.424525', lon: '-98.487076'};
+    const viaTrip = new ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
+    viaTrip.findCloseStops(3, viaTrip.sourceLocation).then( response => {
+        res.send(response);
+    }).catch(err => {
+        res.send(err);
+    });
 
-app.get('*', (req: express.Request, res: express.Response) => {
-res.send('Nothing to see here! seriously')
 });
 
 app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
@@ -84,10 +90,14 @@ app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
             console.log("response: here");
             res.send(JSON.parse(response.text)["result"]);
         }).catch(err => {
-    console.log("error");
-    res.send(err);
-    console.log(err)
+        console.log("error");
+        res.send(err);
+        console.log(err)
     });
+});
+
+app.get('*', (req: express.Request, res: express.Response) => {
+    res.send('Nothing to see here! seriously')
 });
 
 // catch 404 and forward to error handler
