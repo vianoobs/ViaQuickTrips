@@ -74,4 +74,12 @@ console.log("hello");
 let server = app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + server.address()['port']);
 });
+
+// const serverPort = process.env.port || 8080;
+// app.listen(serverPort, () => {
+//     console.log(`Skyknet Active on ${serverPort}`)
+// })
+
+
+
 //# sourceMappingURL=index.js.map
