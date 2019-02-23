@@ -4,7 +4,7 @@ import bodyParser = require("body-parser");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
-import yelpApi = require('../Config/config.js');
+import apiKeys = require('../Config/config.js');
 
 let accessToken;
 
@@ -66,12 +66,14 @@ app.use(bodyParser.json());
 
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
     // console.log(JSON.stringify(req.body));
-    const reqParamObject = paramReturn(req.body);
     superagent
         .get("https://api.yelp.com/v3/businesses/search")
-        .set("Authorization", `bearer ${yelpApi.yelpApi}`)
-        .query(reqParamObject)
-        .then(yelpRes => res.send(JSON.parse(yelpRes.text)))
+        .set("Authorization", `bearer ${apiKeys.yelpApi}`)
+        .query(paramReturn(req.body))
+        .then(yelpRes => {
+            res.send(JSON.parse(yelpRes.text));
+            console.log(paramReturn(req.body)["categories"]);
+        })
         .catch(error => console.log(error));
 });
 
@@ -90,6 +92,27 @@ app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
     console.log(err)
     });
 });
+
+app.post("/api/maps",(req, res) => {
+    const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
+    superagent
+        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=AIzaSyAlQgKoMjj9v_TywfoWcy6eUXGy0r6aIAU`)
+        .then(googleRes => {
+            const jsonResponse = JSON.parse(googleRes.text);
+            // if transit routes are found
+            if(jsonResponse["routes"].length !== 0){
+                res.send(JSON.parse(googleRes.text)["routes"][0]["legs"]);
+            } else {
+                res.send(JSON.parse(googleRes.text))
+            }
+    });
+
+});
+
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req: express.Request, res: express.Response, next) {
@@ -126,16 +149,15 @@ app.use((err: any, req: express.Request, res: express.Response) => {
     });
 });
 
-
-
 //helper functions
 const paramReturn = reqParamObject => {
     return {
+        term: reqParamObject["term"] || null,
         latitude: reqParamObject["lat"] || "29.424122",
         longitude: reqParamObject["long"] || "-98.493629",
         radius: "8000",
-        category: reqParamObject["category"] || null,
-        price: reqParamObject["price"] || "4"
+        categories: reqParamObject["categories"] || null,
+        price: reqParamObject["price"] || "1,2,3,4"
     }
 };
 

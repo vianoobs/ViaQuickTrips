@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
-const yelpApi = require("../Config/config.js");
+const apiKeys = require("../Config/config.js");
 let accessToken;
 app.use(function (req, res, next) {
     // console.log('Time:', Date.now());
@@ -46,12 +46,14 @@ app.use(bodyParser.json());
 //  Routes ----------------------------------------------
 app.post('/api/yelp', (req, res) => {
     // console.log(JSON.stringify(req.body));
-    const reqParamObject = paramReturn(req.body);
     superagent_1.default
         .get("https://api.yelp.com/v3/businesses/search")
-        .set("Authorization", `bearer ${yelpApi.yelpApi}`)
-        .query(reqParamObject)
-        .then(yelpRes => res.send(JSON.parse(yelpRes.text)))
+        .set("Authorization", `bearer ${apiKeys.yelpApi}`)
+        .query(paramReturn(req.body))
+        .then(yelpRes => {
+        res.send(JSON.parse(yelpRes.text));
+        console.log(paramReturn(req.body)["categories"]);
+    })
         .catch(error => console.log(error));
 });
 app.get("/api/all-routes/", (req, res) => {
@@ -66,6 +68,21 @@ app.get("/api/all-routes/", (req, res) => {
         console.log("error");
         res.send(err);
         console.log(err);
+    });
+});
+app.post("/api/maps", (req, res) => {
+    const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
+    superagent_1.default
+        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=AIzaSyAlQgKoMjj9v_TywfoWcy6eUXGy0r6aIAU`)
+        .then(googleRes => {
+        const jsonResponse = JSON.parse(googleRes.text);
+        // if transit routes are found
+        if (jsonResponse["routes"].length !== 0) {
+            res.send(JSON.parse(googleRes.text)["routes"][0]["legs"]);
+        }
+        else {
+            res.send(JSON.parse(googleRes.text));
+        }
     });
 });
 // catch 404 and forward to error handler
@@ -98,11 +115,12 @@ app.use((err, req, res) => {
 //helper functions
 const paramReturn = reqParamObject => {
     return {
+        term: reqParamObject["term"] || null,
         latitude: reqParamObject["lat"] || "29.424122",
         longitude: reqParamObject["long"] || "-98.493629",
         radius: "8000",
-        category: reqParamObject["category"] || null,
-        price: reqParamObject["price"] || "4"
+        categories: reqParamObject["categories"] || null,
+        price: reqParamObject["price"] || "1,2,3,4"
     };
 };
 const port = process.env.port || 8081;
