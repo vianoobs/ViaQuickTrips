@@ -1,0 +1,1 @@
+{"version":3,"file":"sampleConfig.js","sourceRoot":"","sources":["sampleConfig.ts"],"names":[],"mappings":";;AACc,QAAA,UAAU,GAAG,wBAAwB,CAAC","sourcesContent":["\n export const yelpApiKey = \"your-Yelp-API-Key-Here\";\n"]}

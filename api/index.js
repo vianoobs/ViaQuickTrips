@@ -6,10 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const superagent_1 = __importDefault(require("superagent"));
 const bodyParser = require("body-parser");
+const ViaTrip_1 = require("./logic/ViaTrip");
+const config_js_1 = require("../Config/config.js");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
-const apiKeys = require("../Config/config.js");
 let accessToken;
 app.use(function (req, res, next) {
     // console.log('Time:', Date.now());
@@ -45,16 +46,25 @@ app.use(cors());
 app.use(bodyParser.json());
 //  Routes ----------------------------------------------
 app.post('/api/yelp', (req, res) => {
-    // console.log(JSON.stringify(req.body));
     superagent_1.default
         .get("https://api.yelp.com/v3/businesses/search")
-        .set("Authorization", `bearer ${apiKeys.yelpApi}`)
+        .set("Authorization", `bearer ${config_js_1.yelpApi}`)
         .query(paramReturn(req.body))
+        .set("Authorization", `bearer ${config_js_1.yelpApi}`)
         .then(yelpRes => {
         res.send(JSON.parse(yelpRes.text));
-        console.log(paramReturn(req.body)["categories"]);
     })
         .catch(error => console.log(error));
+});
+app.get('/test', (req, res) => {
+    const source = { lat: '29.427839', lon: '-98.494636' };
+    const destination = { lat: '29.424525', lon: '-98.487076' };
+    const viaTrip = new ViaTrip_1.ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
+    viaTrip.findCloseStops(3, viaTrip.sourceLocation).then(response => {
+        res.send(response);
+    }).catch(err => {
+        res.send(err);
+    });
 });
 app.get("/api/all-routes/", (req, res) => {
     superagent_1.default

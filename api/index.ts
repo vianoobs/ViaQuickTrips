@@ -1,10 +1,13 @@
 import express = require('express');
 import superagent from 'superagent';
 import bodyParser = require("body-parser");
+import {ILocation, ViaTrip} from "./logic/ViaTrip";
+import { yelpApi } from '../Config/config.js';
+import { googleApi } from '../Config/config.js';
+
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
-import apiKeys = require('../Config/config.js');
 
 let accessToken;
 
@@ -65,18 +68,28 @@ app.use(bodyParser.json());
 //  Routes ----------------------------------------------
 
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
-    // console.log(JSON.stringify(req.body));
     superagent
         .get("https://api.yelp.com/v3/businesses/search")
-        .set("Authorization", `bearer ${apiKeys.yelpApi}`)
+        .set("Authorization", `bearer ${yelpApi}`)
         .query(paramReturn(req.body))
+        .set("Authorization", `bearer ${yelpApi}`)
         .then(yelpRes => {
             res.send(JSON.parse(yelpRes.text));
-            console.log(paramReturn(req.body)["categories"]);
         })
         .catch(error => console.log(error));
 });
 
+app.get('/test', (req: express.Request, res: express.Response) => {
+    const source: ILocation = {lat: '29.427839', lon: '-98.494636'};
+    const destination: ILocation = {lat: '29.424525', lon: '-98.487076'};
+    const viaTrip = new ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
+    viaTrip.findCloseStops(3, viaTrip.sourceLocation).then( response => {
+        res.send(response);
+    }).catch(err => {
+        res.send(err);
+    });
+
+});
 
 app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
     superagent
@@ -109,21 +122,12 @@ app.post("/api/maps",(req, res) => {
 
 });
 
-
-
-
-
-
 // catch 404 and forward to error handler
 app.use(function (req: express.Request, res: express.Response, next) {
     let err = new Error('Not Found');
     err['status'] = 404;
     next(err);
 });
-
-
-
-
 
 // error handlers
 
