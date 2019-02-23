@@ -8,6 +8,7 @@ const superagent_1 = __importDefault(require("superagent"));
 const bodyParser = require("body-parser");
 const ViaTrip_1 = require("./logic/ViaTrip");
 const config_js_1 = require("../Config/config.js");
+const config_js_2 = require("../Config/config.js");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
@@ -83,7 +84,7 @@ app.get("/api/all-routes/", (req, res) => {
 app.post("/api/maps", (req, res) => {
     const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
     superagent_1.default
-        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${apiKeys.googleApi}`)
+        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${config_js_2.googleApi}`)
         .then(googleRes => {
         const jsonResponse = JSON.parse(googleRes.text);
         // if transit routes are found

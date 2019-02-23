@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-export const yelpApi = "your-Yelp-API-Key-Here";
-export const googleApi = "your-google-API-Key-Here";
-=======
-export const yelpApi = "your-yelp-api-here";
-export const googleApi = "your-google-api-key-here";
->>>>>>> master
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.yelpApiKey = "your-Yelp-API-Key-Here";
+exports.googleMapApi = "your-google-api-key-here";
+//# sourceMappingURL=sampleConfig.js.map
