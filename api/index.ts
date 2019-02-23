@@ -96,7 +96,7 @@ app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
 app.post("/api/maps",(req, res) => {
     const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
     superagent
-        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=AIzaSyAlQgKoMjj9v_TywfoWcy6eUXGy0r6aIAU`)
+        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${apiKeys.googleApi}`)
         .then(googleRes => {
             const jsonResponse = JSON.parse(googleRes.text);
             // if transit routes are found
