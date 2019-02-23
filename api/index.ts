@@ -4,6 +4,7 @@ import bodyParser = require("body-parser");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
+import yelpApi = require('../Config/config.js');
 
 let accessToken;
 
@@ -60,20 +61,20 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
+
+//  Routes ----------------------------------------------
+
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
     // console.log(JSON.stringify(req.body));
-    console.log(req);
-    res.send("donezo");
-
+    const reqParamObject = paramReturn(req.body);
+    superagent
+        .get("https://api.yelp.com/v3/businesses/search")
+        .set("Authorization", `bearer ${yelpApi.yelpApi}`)
+        .query(reqParamObject)
+        .then(yelpRes => res.send(JSON.parse(yelpRes.text)))
+        .catch(error => console.log(error));
 });
 
-app.get('/test', (req: express.Request, res: express.Response) => {
-    res.send('test')
-});
-
-app.get('*', (req: express.Request, res: express.Response) => {
-res.send('Nothing to see here! seriously')
-});
 
 app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
     superagent
@@ -96,6 +97,10 @@ app.use(function (req: express.Request, res: express.Response, next) {
     err['status'] = 404;
     next(err);
 });
+
+
+
+
 
 // error handlers
 
@@ -121,10 +126,20 @@ app.use((err: any, req: express.Request, res: express.Response) => {
     });
 });
 
-app.set('port', process.env.port || 8080);
 
-console.log("hello");
 
-let server = app.listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + server.address()['port']);
+//helper functions
+const paramReturn = reqParamObject => {
+    return {
+        latitude: reqParamObject["lat"] || "29.424122",
+        longitude: reqParamObject["long"] || "-98.493629",
+        radius: "8000",
+        category: reqParamObject["category"] || null,
+        price: reqParamObject["price"] || "4"
+    }
+};
+
+const port = process.env.port || 8080;
+app.listen(port, () => {
+    console.log("Skynet is active on " + port);
 });
