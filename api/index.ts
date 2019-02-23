@@ -64,9 +64,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-
 //  Routes ----------------------------------------------
-
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
     superagent
         .get("https://api.yelp.com/v3/businesses/search")
