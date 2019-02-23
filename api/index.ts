@@ -1,5 +1,6 @@
 import express = require('express');
 import superagent from 'superagent';
+import bodyParser = require("body-parser");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
@@ -57,7 +58,7 @@ app.use(function (req: express.Request, res: express.Response, next) {
 
 app.use(cors());
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
     // console.log(JSON.stringify(req.body));
@@ -66,9 +67,13 @@ app.post('/api/yelp', (req: express.Request, res: express.Response) => {
 
 });
 
-// app.get('*', (req: express.Request, res: express.Response) => {
-// res.send('Nothing to see here! seriously')
-// });
+app.get('/test', (req: express.Request, res: express.Response) => {
+    res.send('test')
+});
+
+app.get('*', (req: express.Request, res: express.Response) => {
+res.send('Nothing to see here! seriously')
+});
 
 app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
     superagent
