@@ -8,8 +8,8 @@ const superagent_1 = __importDefault(require("superagent"));
 const app = express();
 let accessToken;
 app.use(function (req, res, next) {
-    console.log('Time:', Date.now());
-    // Check req obj for any needed headers
+    // console.log('Time:', Date.now());
+    // Check req obj for any needed headers s
     const token = req.header('access_token');
     if (token && token.length > 1) {
         accessToken = token;
@@ -42,6 +42,7 @@ app.get('/hello', (req, res) => {
 app.get('*', (req, res) => {
     res.send('Nothing to see here!');
 });
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     let err = new Error('Not Found');

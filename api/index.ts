@@ -1,5 +1,6 @@
 import express = require('express');
 import superagent from 'superagent';
+const axios = require('axios');
 const app = express();
 
 let accessToken;
@@ -22,7 +23,7 @@ interface IAuthRes {
 }
 
 app.use(function (req: express.Request, res: express.Response, next) {
-    console.log('Time:', Date.now());
+    // console.log('Time:', Date.now());
     // Check req obj for any needed headers
     const token = req.header('access_token');
     if (token && token.length > 1) {
@@ -55,10 +56,26 @@ app.use(function (req: express.Request, res: express.Response, next) {
 
 app.get('/hello', (req: express.Request, res: express.Response) => {
     res.send('Hello from the project root!')
+
 });
 
-app.get('*', (req: express.Request, res: express.Response) => {
-res.send('Nothing to see here!')
+// app.get('*', (req: express.Request, res: express.Response) => {
+// res.send('Nothing to see here! seriously')
+// });
+
+app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
+    superagent
+        .get("https://codegtfsapi.viainfo.net/api/v1/routes")
+        .set("Authorization", `bearer ${accessToken}`)
+        .set("Accept", "application/json")
+        .then(response => {
+            console.log("response: here");
+            res.send(JSON.parse(response.text)["result"]);
+        }).catch(err => {
+    console.log("error");
+    res.send(err);
+    console.log(err)
+    });
 });
 
 // catch 404 and forward to error handler
