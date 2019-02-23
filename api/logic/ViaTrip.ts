@@ -1,4 +1,5 @@
 import {Rest} from "../utils/rest";
+import moment, {Moment} from 'moment';
 
 export interface ILocation {
     lat: string;
@@ -13,6 +14,21 @@ export interface IStop {
     stopCode?: number;
     stopDescription?: any;
     stopName?: string
+}
+
+export interface IStopTime {
+    id: number;
+    arrivalTime: string;
+    arrivalTimeIsNextDay: boolean;
+    departureTime: string;
+    departureTimeIsNextDay: boolean;
+    stopId: number;
+    stopSequence: number;
+    stopHeadsign: string;
+    pickupType: number;
+    dropoffType: number;
+    shapeDistTraveled: number;
+    tripId: number;
 }
 
 export interface ITrip {
@@ -40,10 +56,7 @@ export class ViaTrip {
     public findCloseStops(maxNumberOfStops: number, location: ILocation): Promise<IStop[]> {
         const url = this.baseApiUrl + `/api/v1/stops/closest/${location.lat}/${location.lon}/3`;
         return Rest.get<IViaResponse<IStop[]>>(url, this.accessToken)
-            .then(res =>
-                res.result.slice(maxNumberOfStops))
-            .catch(err =>
-                err);
+            .then(res => res.result.slice(maxNumberOfStops));
     }
 
 
@@ -54,15 +67,39 @@ export class ViaTrip {
                     Rest.get<IViaResponse<IStop[]>>(this.baseApiUrl + `/api/v1/stops/route/${routeId}`, this.accessToken)
                     .then(res => {
                         return res.result.find(stop => stop.stopId === stop2.stopId);
-                    })
-                    .catch(err => err)).length > 0
+                    })).length > 0
             })
-            .catch(err => err);
+            .catch(err => {
+                console.log(err);
+                return false;
+            });
     }
-    //
-    // private findSourceLocationTripsAtCurrentTime(stopId: number): Trip[] {
-    //
-    // }
+
+    private findSourceLocationTripsAtCurrentTime(stop: IStop): Promise<ITrip[]> {
+    const url = this.baseApiUrl + `/api/v1/stop-times/stop/${stop.stopId}`;
+        return Rest.get<IViaResponse<IStopTime[]>>(url, this.accessToken)
+            .then(res => {
+                const stopTimes: IStopTime[] = res.result;
+                const trips: ITrip[] = [];
+                const time = moment();
+                const forward = time.hour() <= 12;
+                const start = forward ? 0 : stopTimes.length - 1;
+                const end = forward ? stopTimes.length - 1 : 0;
+                function addOrSub(forward: boolean, val: number): number {
+                    return forward ? val++ : val--;
+                }
+                for (let i = start; end; addOrSub(forward, i)) {
+                    const stopTime = stopTimes[i];
+                    const minutesUntilStop = this.findMinutesBewtweenNowAndApiTime(stopTime.arrivalTime, time);
+                    const distance = this.calculateDistance(this.sourceLocation, this.desinationLocation, true);
+                    const walkingTime = this.distanceinKmToWalkingTimeInMin(distance);
+                    if (minutesUntilStop > 0 && minutesUntilStop < 45 ) {
+
+                    }
+                }
+                return trips;
+            });
+    }
     //
     // private findAllStopsForTrip(trip: Trip): IStop[] {
     //
@@ -76,9 +113,19 @@ export class ViaTrip {
     //
     // }
     //
-    // private distanceToTime(distance: number): number {
-    //
-    // }
+    private distanceinKmToWalkingTimeInMin(distance: number): number {
+        return distance * 20;
+    }
+
+    private findMinutesBewtweenNowAndApiTime(apiTime: string, currentDate: Moment) {
+        const apiFullTime = `${currentDate.year()}-${currentDate.month()+1}-${currentDate.date()}T${apiTime}`;
+        const apiDate = moment(apiFullTime);
+        const duration = moment.duration(apiDate.diff(currentDate));
+        const hours = duration.asHours();
+        const minutes = duration.asMinutes();
+        console.log(hours + ' hour and '+ minutes+' minutes.');
+        return minutes;
+    }
 
     private calculateDistance(location1: ILocation, location2: ILocation, returnKm: boolean = false, decimals: number = 2): number {
         const lat1 = parseFloat(location1.lat);
