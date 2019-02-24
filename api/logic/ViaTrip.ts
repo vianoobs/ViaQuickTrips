@@ -109,19 +109,19 @@ export class ViaTrip {
                 return trips;
             });
     }
-    //
-    // private findAllStopsForTrip(trip: Trip): IStop[] {
-    //
-    // }
-    //
-    // private isDestinationStopAfterSourceForTrip(trip: Trip): boolean {
-    //
-    // }
-    //
-    // private findStopTimeForTrip(stop: IStop, trip: Trip): number {
-    //
-    // }
-    //
+
+    private findAllStopsForTrip(trip: ITrip): Promise<IStop[]> {
+
+    }
+
+    private isDestinationStopAfterSourceForTrip(trip: ITrip): Promise<boolean> {
+
+    }
+
+    private findStopTimeForTrip(stop: IStop, trip: ITrip): Promise<Moment> {
+
+    }
+
     private distanceInKmToWalkingTimeInMin(distance: number): number {
         return distance * 20;
     }
