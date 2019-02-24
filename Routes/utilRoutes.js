@@ -7,6 +7,7 @@ const superagent_1 = __importDefault(require("superagent"));
 const ViaTrip_1 = require("../api/logic/ViaTrip");
 const cors = require('cors');
 const bodyParser = require("body-parser");
+const express = require("express");
 let accessToken;
 const utilRoutes = app => {
     app.use(function (req, res, next) {
@@ -57,6 +58,16 @@ const utilRoutes = app => {
         err['status'] = 404;
         next(err);
     });
+    if (process.env.NODE_ENV === "production") {
+        // express will serve production assets ( main.js, main.css )
+        // look inside client/build to serve assets
+        app.use(express.static('client/build'));
+        // express will serve index.html if it doesnt recognize route
+        const path = require('path');
+        app.get("*", (req, res) => {
+            res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+        });
+    }
 };
 exports.default = utilRoutes;
 //# sourceMappingURL=utilRoutes.js.map

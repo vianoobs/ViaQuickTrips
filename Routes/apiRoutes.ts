@@ -46,6 +46,7 @@ const apiRoutes = app => {
     });
 
     app.post("/api/maps", (req, res) => {
+        console.log(req.body);
         const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
         superagent
             .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${googleApi}`)
@@ -58,8 +59,7 @@ const apiRoutes = app => {
                     res.send(JSON.parse(googleRes.text))
                 }
             });
-
     });
-}
+};
 
 export default apiRoutes;
