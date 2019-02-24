@@ -18,6 +18,8 @@ const paramReturn = reqParamObject => {
 
 const apiRoutes = app => {
 
+    // ------- yelp ---------------
+    // ----------------------------
     app.post('/api/yelp', (req: express.Request, res: express.Response) => {
         superagent
             .get("https://api.yelp.com/v3/businesses/search")
@@ -30,6 +32,8 @@ const apiRoutes = app => {
             .catch(error => console.log(error));
     });
 
+    // ------- via all routes ---------------
+    // ----------------------------
     app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
         superagent
             .get("https://codegtfsapi.viainfo.net/api/v1/routes")
@@ -45,8 +49,9 @@ const apiRoutes = app => {
         });
     });
 
+    // ------- google maps / directions ---------------
+    // ------------------------------------------------
     app.post("/api/maps", (req, res) => {
-        console.log(req.body);
         const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
         superagent
             .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${googleApi}`)
