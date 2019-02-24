@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 // template for all user instances
 const userSchema = new Schema({
-    userId: String,
+    googleId: String,
     firstName: String,
     lastName: String,
     displayName: String,
