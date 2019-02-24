@@ -1,6 +1,5 @@
 import superagent from "superagent";
-import {ILocation, ViaTrip} from "../api/logic/ViaTrip";
-const cors = require('cors');
+
 import bodyParser = require("body-parser");
 import express = require('express');
 
@@ -56,21 +55,9 @@ const utilRoutes = app => {
 
     });
 
-    app.use(cors());
+
 
     app.use(bodyParser.json());
-
-    app.get('/test', (req: express.Request, res: express.Response) => {
-        const source: ILocation = {lat: '29.427839', lon: '-98.494636'};
-        const destination: ILocation = {lat: '29.424525', lon: '-98.487076'};
-        const viaTrip = new ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
-        viaTrip.findCloseStops(3, viaTrip.sourceLocation).then(response => {
-            res.send(response);
-        }).catch(err => {
-            res.send(err);
-        });
-
-    });
 
 // catch 404 and forward to error handler
     app.use(function (req: express.Request, res: express.Response, next) {

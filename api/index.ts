@@ -2,6 +2,7 @@ import express = require('express');
 const app = express();
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const cors = require('cors');
 require('../models/User');
 require('../models/Routes');
 require('../services/passport');
@@ -11,7 +12,7 @@ const mongoose = require('mongoose');
 import routes from '../Routes/routes';
 
 
-
+app.use(cors());
 //connecting to the db
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true})
     .catch(message => console.log(message));

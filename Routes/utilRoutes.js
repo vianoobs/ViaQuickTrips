@@ -4,8 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const superagent_1 = __importDefault(require("superagent"));
-const ViaTrip_1 = require("../api/logic/ViaTrip");
-const cors = require('cors');
 const bodyParser = require("body-parser");
 const express = require("express");
 let accessToken;
@@ -40,18 +38,7 @@ const utilRoutes = app => {
             });
         }
     });
-    app.use(cors());
     app.use(bodyParser.json());
-    app.get('/test', (req, res) => {
-        const source = { lat: '29.427839', lon: '-98.494636' };
-        const destination = { lat: '29.424525', lon: '-98.487076' };
-        const viaTrip = new ViaTrip_1.ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
-        viaTrip.findCloseStops(3, viaTrip.sourceLocation).then(response => {
-            res.send(response);
-        }).catch(err => {
-            res.send(err);
-        });
-    });
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
         let err = new Error('Not Found');
