@@ -7,6 +7,7 @@ const express = require("express");
 const app = express();
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const cors = require('cors');
 require('../models/User');
 require('../models/Routes');
 require('../services/passport');
@@ -14,6 +15,7 @@ require('../Services/routeServices');
 const keys = require('../Config/config');
 const mongoose = require('mongoose');
 const routes_1 = __importDefault(require("../Routes/routes"));
+app.use(cors());
 //connecting to the db
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true })
     .catch(message => console.log(message));
