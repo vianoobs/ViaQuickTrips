@@ -7,12 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("../utils/rest");
-const moment_1 = __importDefault(require("moment"));
 class ViaTrip {
     constructor(sourceLocation, destinationLocation, baseApiUrl, accessToken) {
         this.sourceLocation = sourceLocation;
@@ -45,7 +41,7 @@ class ViaTrip {
             .then(res => {
             const stopTimes = res.result;
             const trips = [];
-            const time = moment_1.default();
+            const time = moment();
             const forward = time.hour() <= 12;
             const start = forward ? 0 : stopTimes.length - 1;
             const end = forward ? stopTimes.length - 1 : 0;
@@ -88,10 +84,10 @@ class ViaTrip {
         });
     }
     findStopArrivalTimeForTripStop(stop, trip) {
-        return this.findAllStopsForTrip(trip).then(stopTimes => moment_1.default(stopTimes.find(stopTime => stopTime.tripId === stop.stopId).arrivalTime));
+        return this.findAllStopsForTrip(trip).then(stopTimes => moment(stopTimes.find(stopTime => stopTime.tripId === stop.stopId).arrivalTime));
     }
     findStopDepartureTimeForTripStop(stop, trip) {
-        return this.findAllStopsForTrip(trip).then(stopTimes => moment_1.default(stopTimes.find(stopTime => stopTime.tripId === stop.stopId).departureTime));
+        return this.findAllStopsForTrip(trip).then(stopTimes => moment(stopTimes.find(stopTime => stopTime.tripId === stop.stopId).departureTime));
     }
     findStopSequence(stopTimes, stop) {
         return stopTimes.find(stopTime => stopTime.tripId === stop.stopId).stopSequence;
@@ -123,12 +119,12 @@ class ViaTrip {
     }
     findMinutesBewtweenNowAndApiTime(apiTime, currentDate) {
         const apiFullTime = `${currentDate.year()}-${currentDate.month() + 1}-${currentDate.date()}T${apiTime}`;
-        const apiDate = moment_1.default(apiFullTime);
-        const duration = moment_1.default.duration(apiDate.diff(currentDate));
+        const apiDate = moment(apiFullTime);
+        const duration = moment.duration(apiDate.diff(currentDate));
         return duration.minutes();
     }
     findMinutesBewtweenTimes(time1, time2) {
-        const duration = moment_1.default.duration(time2.diff(time1));
+        const duration = moment.duration(time2.diff(time1));
         return duration.minutes();
     }
     calculateDistance(location1, location2, returnKm = false, decimals = 2) {

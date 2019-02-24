@@ -1,5 +1,4 @@
 import {Rest} from "../utils/rest";
-import moment, {Moment} from 'moment';
 
 export interface ILocation {
     lat: string;

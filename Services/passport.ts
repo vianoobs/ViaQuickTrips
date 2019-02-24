@@ -2,7 +2,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const keys = require('../config/config');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const FacebookStrategy = require('passport-facebook');
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 //access the users collection the db
 const User = mongoose.model('users');
@@ -24,7 +24,6 @@ passport.use(new GoogleStrategy({
     callbackURL: '/auth/google/callback',
     proxy: true
 }, (accessToken, refreshToken, profile, done) => {
-    console.log(profile);
     User.findOne({userId: profile.id})
         .then(user => {
             if (user) {
@@ -34,7 +33,8 @@ passport.use(new GoogleStrategy({
                     userId: profile.id,
                     firstName: profile.name.givenName,
                     lastName: profile.name.familyName,
-                    displayName: profile.displayName
+                    displayName: profile.displayName,
+                    provider: profile.provider
                 }).save()
                     .then(newUser => done(null, newUser))
                     .catch(error => {
@@ -51,16 +51,19 @@ passport.use(new FacebookStrategy({
         callbackURL: "http://localhost:8081/auth/facebook/callback"
     },
     (accessToken, refreshToken, profile, done) => {
+    console.log(profile);
         User.findOne({userId: profile.id})
             .then(user => {
                 if (user) {
+                    console.log(profile);
                     done(null, user);
                 } else {
                     new User({
                         userId: profile.id,
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
-                        displayName: profile.displayName
+                        displayName: profile.displayName,
+                        provider: profile.provider
                     }).save()
                         .then(newUser => done(null, newUser))
                         .catch(error => {
