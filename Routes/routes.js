@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const apiRoutes_1 = __importDefault(require("./apiRoutes"));
-const authRoutes_1 = __importDefault(require("./authRoutes"));
+const googleAuthRoutes_1 = __importDefault(require("./googleAuthRoutes"));
+const facebookAuthRoutes_1 = __importDefault(require("./facebookAuthRoutes"));
 const saveViaRoutes_1 = __importDefault(require("./saveViaRoutes"));
 const utilRoutes_1 = __importDefault(require("./utilRoutes"));
 const bodyParser = require("body-parser");
@@ -13,7 +14,8 @@ const routes = (app) => {
     // routes for api calls
     apiRoutes_1.default(app);
     // auth routes
-    authRoutes_1.default(app);
+    googleAuthRoutes_1.default(app);
+    facebookAuthRoutes_1.default(app);
     // saving previously searched routes
     saveViaRoutes_1.default(app);
     // routes from util, token, and error handling

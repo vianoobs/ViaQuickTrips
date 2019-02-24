@@ -10,6 +10,7 @@ const keys = require('../Config/config');
 const mongoose = require('mongoose');
 import routes from '../Routes/routes';
 
+
 //connecting to the db
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true})
     .catch(message => console.log(message));

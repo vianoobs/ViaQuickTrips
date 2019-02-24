@@ -1,19 +1,19 @@
 const passport = require('passport');
 import { keys } from'../Config/config'
-const authRoutes = (app) => {
+const facebookAuthRoutes = (app) => {
 
     // log users in
-    app.get("/api/auth/google", passport.authenticate("google", {
-        scope: ['email', 'profile']
-    }));
+    app.get("/auth/facebook", passport.authenticate("facebook"), () => {
+        console.log("something")
+        }
+    );
 
-    app.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
+    app.get("/auth/facebook/callback", passport.authenticate("facebook"), (req, res) => {
         res.send("logged in")
     });
 
     // request here on root mount to see if logged in
     app.get("/api/user", (req, res) => {
-        console.log("get loggin");
         res.send(req.user)
     });
 
@@ -24,4 +24,4 @@ const authRoutes = (app) => {
     });
 };
 
-export default authRoutes;
+export default facebookAuthRoutes;

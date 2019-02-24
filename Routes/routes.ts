@@ -1,5 +1,6 @@
 import apiRoutes from './apiRoutes';
-import authRoutes from './authRoutes';
+import googleAuthRoutes from './googleAuthRoutes';
+import facebookRoutes from './facebookAuthRoutes';
 import saveRoutes from './saveViaRoutes';
 import utilRoutes from './utilRoutes';
 
@@ -12,7 +13,8 @@ const routes = (app) => {
     apiRoutes(app);
 
     // auth routes
-    authRoutes(app);
+    googleAuthRoutes(app);
+    facebookRoutes(app);
 
     // saving previously searched routes
     saveRoutes(app);
