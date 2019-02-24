@@ -1,9 +1,8 @@
 const passport = require('passport');
-
 import { keys } from'../Config/config'
-
 const authRoutes = (app) => {
 
+    // log users in
     app.get("/api/auth/google", passport.authenticate("google", {
         scope: ['email', 'profile']
     }));
@@ -12,17 +11,17 @@ const authRoutes = (app) => {
         res.send("logged in")
     });
 
-    app.get("/api/userman", (req, res) => {
+    // request here on root mount to see if logged in
+    app.get("/api/user", (req, res) => {
         console.log("get loggin");
         res.send(req.user)
     });
 
+    // log users out
     app.get("/api/logout", (req, res) => {
         req.logout();
         res.redirect("/")
     });
-
-
 };
 
 export default authRoutes;
