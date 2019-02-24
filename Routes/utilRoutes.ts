@@ -1,6 +1,8 @@
 import superagent from "superagent";
+import {ILocation, ViaTrip} from "../api/logic/ViaTrip";
+const cors = require('cors');
+import bodyParser = require("body-parser");
 import express = require('express');
-const app = express();
 
 let accessToken;
 
@@ -21,8 +23,8 @@ interface IAuthRes {
     access_token: string;
 }
 
-module.exports = {
-    tokenGetter: app.use(function (req: express.Request, res: express.Response, next) {
+const utilRoutes = app => {
+    app.use(function (req: express.Request, res: express.Response, next) {
         // console.log('Time:', Date.now());
         // Check req obj for any needed headers
         const token = req.header('access_token');
@@ -52,6 +54,41 @@ module.exports = {
             });
         }
 
-    }),
-    token: accessToken
+    });
+
+    app.use(cors());
+
+    app.use(bodyParser.json());
+
+    app.get('/test', (req: express.Request, res: express.Response) => {
+        const source: ILocation = {lat: '29.427839', lon: '-98.494636'};
+        const destination: ILocation = {lat: '29.424525', lon: '-98.487076'};
+        const viaTrip = new ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
+        viaTrip.findCloseStops(3, viaTrip.sourceLocation).then(response => {
+            res.send(response);
+        }).catch(err => {
+            res.send(err);
+        });
+
+    });
+
+// catch 404 and forward to error handler
+    app.use(function (req: express.Request, res: express.Response, next) {
+        let err = new Error('Not Found');
+        err['status'] = 404;
+        next(err);
+    });
+    if (process.env.NODE_ENV === "production"){
+        // express will serve production assets ( main.js, main.css )
+        // look inside client/build to serve assets
+        app.use(express.static('client/build'));
+
+        // express will serve index.html if it doesnt recognize route
+        const path = require('path');
+        app.get("*", (req, res) => {
+            res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+        })
+    }
 };
+
+export default utilRoutes;

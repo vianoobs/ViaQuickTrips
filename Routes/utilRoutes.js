@@ -4,11 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const superagent_1 = __importDefault(require("superagent"));
+const ViaTrip_1 = require("../api/logic/ViaTrip");
+const cors = require('cors');
+const bodyParser = require("body-parser");
 const express = require("express");
-const app = express();
 let accessToken;
-module.exports = {
-    tokenGetter: app.use(function (req, res, next) {
+const utilRoutes = app => {
+    app.use(function (req, res, next) {
         // console.log('Time:', Date.now());
         // Check req obj for any needed headers
         const token = req.header('access_token');
@@ -37,7 +39,35 @@ module.exports = {
                 console.log(err);
             });
         }
-    }),
-    token: accessToken
+    });
+    app.use(cors());
+    app.use(bodyParser.json());
+    app.get('/test', (req, res) => {
+        const source = { lat: '29.427839', lon: '-98.494636' };
+        const destination = { lat: '29.424525', lon: '-98.487076' };
+        const viaTrip = new ViaTrip_1.ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
+        viaTrip.findCloseStops(3, viaTrip.sourceLocation).then(response => {
+            res.send(response);
+        }).catch(err => {
+            res.send(err);
+        });
+    });
+    // catch 404 and forward to error handler
+    app.use(function (req, res, next) {
+        let err = new Error('Not Found');
+        err['status'] = 404;
+        next(err);
+    });
+    if (process.env.NODE_ENV === "production") {
+        // express will serve production assets ( main.js, main.css )
+        // look inside client/build to serve assets
+        app.use(express.static('client/build'));
+        // express will serve index.html if it doesnt recognize route
+        const path = require('path');
+        app.get("*", (req, res) => {
+            res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+        });
+    }
 };
-//# sourceMappingURL=tokenGetter.js.map
+exports.default = utilRoutes;
+//# sourceMappingURL=utilRoutes.js.map
