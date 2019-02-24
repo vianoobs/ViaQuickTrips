@@ -1,0 +1,1 @@
+{"version":3,"file":"sampleConfig.js","sourceRoot":"","sources":["sampleConfig.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,GAAG;IACb,OAAO,EAAE,UAAU;IACnB,SAAS,EAAE,YAAY;CAC1B,CAAC","sourcesContent":["module.exports = {\n    yelpApi: \"yelp-api\",\n    googleApi: \"google-api\"\n};\n"]}

@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const superagent_1 = __importDefault(require("superagent"));
 const bodyParser = require("body-parser");
+const ViaTrip_1 = require("./logic/ViaTrip");
+const config_js_1 = require("../Config/config.js");
+const config_js_2 = require("../Config/config.js");
 const axios = require('axios');
 const app = express();
 const cors = require('cors');
-const yelpApi = require("../Config/config.js");
 let accessToken;
 app.use(function (req, res, next) {
     // console.log('Time:', Date.now());
@@ -45,14 +47,25 @@ app.use(cors());
 app.use(bodyParser.json());
 //  Routes ----------------------------------------------
 app.post('/api/yelp', (req, res) => {
-    // console.log(JSON.stringify(req.body));
-    const reqParamObject = paramReturn(req.body);
     superagent_1.default
         .get("https://api.yelp.com/v3/businesses/search")
-        .set("Authorization", `bearer ${yelpApi.yelpApi}`)
-        .query(reqParamObject)
-        .then(yelpRes => res.send(JSON.parse(yelpRes.text)))
+        .set("Authorization", `bearer ${config_js_1.yelpApi}`)
+        .query(paramReturn(req.body))
+        .set("Authorization", `bearer ${config_js_1.yelpApi}`)
+        .then(yelpRes => {
+        res.send(JSON.parse(yelpRes.text));
+    })
         .catch(error => console.log(error));
+});
+app.get('/test', (req, res) => {
+    const source = { lat: '29.427839', lon: '-98.494636' };
+    const destination = { lat: '29.424525', lon: '-98.487076' };
+    const viaTrip = new ViaTrip_1.ViaTrip(source, destination, 'https://codegtfsapi.viainfo.net', accessToken);
+    viaTrip.findCloseStops(3, viaTrip.sourceLocation).then(response => {
+        res.send(response);
+    }).catch(err => {
+        res.send(err);
+    });
 });
 app.get("/api/all-routes/", (req, res) => {
     superagent_1.default
@@ -66,6 +79,21 @@ app.get("/api/all-routes/", (req, res) => {
         console.log("error");
         res.send(err);
         console.log(err);
+    });
+});
+app.post("/api/maps", (req, res) => {
+    const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
+    superagent_1.default
+        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${config_js_2.googleApi}`)
+        .then(googleRes => {
+        const jsonResponse = JSON.parse(googleRes.text);
+        // if transit routes are found
+        if (jsonResponse["routes"].length !== 0) {
+            res.send(JSON.parse(googleRes.text)["routes"][0]["legs"]);
+        }
+        else {
+            res.send(JSON.parse(googleRes.text));
+        }
     });
 });
 // catch 404 and forward to error handler
@@ -98,11 +126,12 @@ app.use((err, req, res) => {
 //helper functions
 const paramReturn = reqParamObject => {
     return {
+        term: reqParamObject["term"] || null,
         latitude: reqParamObject["lat"] || "29.424122",
         longitude: reqParamObject["long"] || "-98.493629",
         radius: "8000",
-        category: reqParamObject["category"] || null,
-        price: reqParamObject["price"] || "4"
+        categories: reqParamObject["categories"] || null,
+        price: reqParamObject["price"] || "1,2,3,4"
     };
 };
 const port = process.env.port || 8081;
