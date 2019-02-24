@@ -9,5 +9,7 @@ export const apiConfig = {
     keys: "some-crazy-madeup-stuff",
     googleClientID: "your-clientID",
     googleClientSecret: "your-secret",
-    mongoURI: "mongodb://username:password@ds349455.mlab.com:49455/quick-tip-dev"
+    mongoURI: "mongodb://username:password@ds349455.mlab.com:49455/quick-tip-dev",
+    facebookSecret: "fb-secret",
+    facebookClientToken: "fb-client-token"
 };

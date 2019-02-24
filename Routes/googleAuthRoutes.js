@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport = require('passport');
-const authRoutes = (app) => {
+const googleAuthRoutes = (app) => {
     // log users in
     app.get("/api/auth/google", passport.authenticate("google", {
         scope: ['email', 'profile']
@@ -11,7 +11,6 @@ const authRoutes = (app) => {
     });
     // request here on root mount to see if logged in
     app.get("/api/user", (req, res) => {
-        console.log("get loggin");
         res.send(req.user);
     });
     // log users out
@@ -20,5 +19,5 @@ const authRoutes = (app) => {
         res.redirect("/");
     });
 };
-exports.default = authRoutes;
-//# sourceMappingURL=authRoutes.js.map
+exports.default = googleAuthRoutes;
+//# sourceMappingURL=googleAuthRoutes.js.map
