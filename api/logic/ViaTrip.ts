@@ -111,16 +111,20 @@ export class ViaTrip {
     }
 
     private findAllStopsForTrip(trip: ITrip): Promise<IStop[]> {
-
+        const url = this.baseApiUrl + `/api/v1/stop-times/trip/${}`;
+        return Rest.get<IViaResponse<IStopTime[]>>(url, this.accessToken)
+            .then(res => res.result.map(stopTime => {
+               return {stopId: stopTime.stopId}})
+            );
     }
 
     private isDestinationStopAfterSourceForTrip(trip: ITrip): Promise<boolean> {
 
     }
 
-    private findStopTimeForTrip(stop: IStop, trip: ITrip): Promise<Moment> {
-
-    }
+    // private findStopTimeForTrip(stop: IStop, trip: ITrip): Promise<Moment> {
+    //
+    // }
 
     private distanceInKmToWalkingTimeInMin(distance: number): number {
         return distance * 20;
