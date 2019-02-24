@@ -2,10 +2,8 @@ import express = require('express');
 import superagent from 'superagent';
 import bodyParser = require("body-parser");
 import {ILocation, ViaTrip} from "./logic/ViaTrip";
-import { yelpApi } from '../Config/config.js';
-import { googleApi } from '../Config/config.js';
+import {apiConfig} from "../Config/sampleConfig";
 
-const axios = require('axios');
 const app = express();
 const cors = require('cors');
 
@@ -68,9 +66,9 @@ app.use(bodyParser.json());
 app.post('/api/yelp', (req: express.Request, res: express.Response) => {
     superagent
         .get("https://api.yelp.com/v3/businesses/search")
-        .set("Authorization", `bearer ${yelpApi}`)
+        .set("Authorization", `bearer ${apiConfig.yelpApi}`)
         .query(paramReturn(req.body))
-        .set("Authorization", `bearer ${yelpApi}`)
+        .set("Authorization", `bearer ${apiConfig.yelpApi}`)
         .then(yelpRes => {
             res.send(JSON.parse(yelpRes.text));
         })
@@ -107,7 +105,7 @@ app.get("/api/all-routes/", (req: express.Request, res: express.Response) => {
 app.post("/api/maps",(req, res) => {
     const currentLocation = `${req.body.currentLat},${req.body.currentLong}`;
     superagent
-        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${googleApi}`)
+        .get(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentLocation}&destination=${req.body.destination}&mode=transit&key=${apiConfig.googleApi}`)
         .then(googleRes => {
             const jsonResponse = JSON.parse(googleRes.text);
             // if transit routes are found
