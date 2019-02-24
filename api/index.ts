@@ -1,12 +1,14 @@
 import express = require('express');
-import routes from '../Routes/routes'
+const app = express();
 const passport = require('passport');
 const cookieSession = require('cookie-session');
-const app = express();
 require('../models/User');
+require('../models/Routes');
 require('../services/passport');
+require('../Services/routeServices');
 const keys = require('../Config/config');
 const mongoose = require('mongoose');
+import routes from '../Routes/routes';
 
 //connecting to the db
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true})

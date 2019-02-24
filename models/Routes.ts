@@ -3,8 +3,9 @@ const { Schema } = mongoose;
 
 // template for all user instances
 const routesSchema = new Schema({
-    googleId: String,
-    //route info
+    owner: String,
+    name: String,
+    address: String
 });
 
 //creates users collection if not exists
