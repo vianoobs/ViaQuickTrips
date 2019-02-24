@@ -1,12 +1,9 @@
 const passport = require('passport');
-import { keys } from'../Config/config'
+
 const facebookAuthRoutes = (app) => {
 
     // log users in
-    app.get("/auth/facebook", passport.authenticate("facebook"), () => {
-        console.log("something")
-        }
-    );
+    app.get("/auth/facebook", passport.authenticate("facebook"));
 
     app.get("/auth/facebook/callback", passport.authenticate("facebook"), (req, res) => {
         res.send("logged in")
@@ -20,7 +17,7 @@ const facebookAuthRoutes = (app) => {
     // log users out
     app.get("/api/logout", (req, res) => {
         req.logout();
-        res.redirect("/")
+        res.send("done")
     });
 };
 

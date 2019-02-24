@@ -6,7 +6,8 @@ const userSchema = new Schema({
     userId: String,
     firstName: String,
     lastName: String,
-    displayName: String
+    displayName: String,
+    provider: String
 });
 
 //creates users collection if not exists
