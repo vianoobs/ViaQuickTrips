@@ -1,4 +1,6 @@
-module.exports = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.apiConfig = {
     yelpApi: "yelp-api",
     googleApi: "google-api",
     keys: "some-crazy-madeup-stuff",
