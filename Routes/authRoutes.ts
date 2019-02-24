@@ -1,6 +1,6 @@
 const passport = require('passport');
-import bodyParser = require("body-parser");
-let urlencodedParser = bodyParser.urlencoded({extended: false});
+
+import { keys } from'../Config/config'
 
 const authRoutes = (app) => {
 
@@ -9,10 +9,11 @@ const authRoutes = (app) => {
     }));
 
     app.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
-        res.redirect("/")
+        res.send("logged in")
     });
 
-    app.get("/api/user", (req, res) => {
+    app.get("/api/userman", (req, res) => {
+        console.log("get loggin");
         res.send(req.user)
     });
 
@@ -20,6 +21,8 @@ const authRoutes = (app) => {
         req.logout();
         res.redirect("/")
     });
+
+
 };
 
 export default authRoutes;

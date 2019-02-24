@@ -1,7 +1,8 @@
 import apiRoutes from './apiRoutes';
-import utilRoutes from './utilRoutes';
-import passportApp from './passportRoutes';
 import authRoutes from './authRoutes';
+import saveRoutes from './saveViaRoutes';
+import utilRoutes from './utilRoutes';
+
 const bodyParser = require("body-parser");
 
 const routes = (app) => {
@@ -10,14 +11,14 @@ const routes = (app) => {
     // routes for api calls
     apiRoutes(app);
 
-    // routes from util, token, and error handling
-    utilRoutes(app);
-
-    // passport app
-    passportApp(app);
-
     // auth routes
     authRoutes(app);
+
+    // saving previously searched routes
+    saveRoutes(app);
+
+    // routes from util, token, and error handling
+    utilRoutes(app);
 
     const port = process.env.port || 8081;
     app.listen(port, () => {
