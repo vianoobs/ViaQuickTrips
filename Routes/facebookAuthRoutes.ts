@@ -8,17 +8,6 @@ const facebookAuthRoutes = (app) => {
     app.get("/auth/facebook/callback", passport.authenticate("facebook"), (req, res) => {
         res.send("logged in")
     });
-
-    // request here on root mount to see if logged in
-    app.get("/api/user", (req, res) => {
-        res.send(req.user)
-    });
-
-    // log users out
-    app.get("/api/logout", (req, res) => {
-        req.logout();
-        res.send("done")
-    });
 };
 
 export default facebookAuthRoutes;

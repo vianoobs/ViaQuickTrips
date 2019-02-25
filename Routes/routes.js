@@ -8,9 +8,7 @@ const googleAuthRoutes_1 = __importDefault(require("./googleAuthRoutes"));
 const facebookAuthRoutes_1 = __importDefault(require("./facebookAuthRoutes"));
 const saveViaRoutes_1 = __importDefault(require("./saveViaRoutes"));
 const utilRoutes_1 = __importDefault(require("./utilRoutes"));
-const bodyParser = require("body-parser");
 const routes = (app) => {
-    app.use(bodyParser.json());
     // routes for api calls
     apiRoutes_1.default(app);
     // auth routes
