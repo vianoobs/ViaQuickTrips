@@ -10,7 +10,7 @@ const paramReturn = reqParamObject => {
         term: reqParamObject["term"] || null,
         latitude: reqParamObject["lat"] || "29.424122",
         longitude: reqParamObject["long"] || "-98.493629",
-        radius: "160000",
+        radius: "8000",
         categories: reqParamObject["categories"] || null,
         price: reqParamObject["price"] || "1,2,3,4"
     }

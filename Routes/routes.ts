@@ -4,10 +4,8 @@ import facebookRoutes from './facebookAuthRoutes';
 import saveRoutes from './saveViaRoutes';
 import utilRoutes from './utilRoutes';
 
-const bodyParser = require("body-parser");
-
 const routes = (app) => {
-    app.use(bodyParser.json());
+
 
     // routes for api calls
     apiRoutes(app);
@@ -18,14 +16,6 @@ const routes = (app) => {
 
     // saving previously searched routes
     saveRoutes(app);
-
-
-
-
-
-
-
-
 
     // routes from util, token, and error handling
     utilRoutes(app);
