@@ -12,14 +12,14 @@ passport.use(new GoogleStrategy({
     callbackURL: '/auth/google/callback',
     proxy: true
 }, (accessToken, refreshToken, profile, done) => {
-    User.findOne({ googleId: profile.id })
+    User.findOne({ userId: profile.id })
         .then(user => {
         if (user) {
             done(null, user);
         }
         else {
             new User({
-                googleId: profile.id,
+                userId: profile.id,
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
                 displayName: profile.displayName

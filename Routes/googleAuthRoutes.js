@@ -8,7 +8,7 @@ const googleAuthRoutes = (app) => {
         scope: ['email', 'profile']
     }));
     app.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
-        res.redirect("/");
+        res.redirect("http://localhost:8080");
     });
     // request here on root mount to see if logged in
     app.options("/api/user", cors());
