@@ -28,4 +28,5 @@ const saveRoutes = app => {
         })
     });
 };
+
 export default saveRoutes;

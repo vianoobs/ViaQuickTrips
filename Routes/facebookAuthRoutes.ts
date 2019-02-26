@@ -6,7 +6,7 @@ const facebookAuthRoutes = (app) => {
     app.get("/auth/facebook", passport.authenticate("facebook"));
 
     app.get("/auth/facebook/callback", passport.authenticate("facebook"), (req, res) => {
-        res.send("logged in")
+        res.redirect('http://localhost:8080')
     });
 };
 

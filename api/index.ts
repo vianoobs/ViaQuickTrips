@@ -12,6 +12,7 @@ const keys = require('../Config/config');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 
+
 app.use(cors());
 //connecting to the db
 mongoose.connect(keys.mongoURI, {useNewUrlParser: true})
@@ -22,7 +23,7 @@ app.use(cookieSession({
     keys: [keys.keys]
 }));
 passport.serializeUser((user, done) => {
-    let userOptions = {_id: user._id, googleId: user.googleId, firstName: user.firstName, lastName: user.lastName, displayName: user.displayName}
+    let userOptions = {userId: user.userId, firstName: user.firstName, lastName: user.lastName, displayName: user.displayName}
     done(null, userOptions);
 });
 passport.deserializeUser((userOptions, done) => {
