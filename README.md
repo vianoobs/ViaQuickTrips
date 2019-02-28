@@ -23,7 +23,7 @@ This project uses [MongoDb](https://www.mongodb.com/) , and [mLab](https://mlab.
 <br><br>Follow their instructions to setup a database, and user for that data base. Follow the `sampleConfig.js` to plug your credentials into the `config` file
 
 ## Tech Stack
-This application uses Vue.js, MongoDb, Node, and Express. <br> Express serves a RESTful API, consumed by the Vue.js front end.
+This application uses Vue.js, MongoDb, Node, and Express. <br><br> Express serves a RESTful API, consumed by the Vue.js front end.
 
 ## Contributing
 Ensure that you are on *your own branch* **before** making edits
