@@ -111,7 +111,7 @@
         methods:{
             sort(dollars) {
                 axios
-                    .post('http://localhost:8081/api/yelp', {
+                    .post('/api/yelp', {
                         lat: this.$route.query.lat,
                         long: this.$route.query.long,
                         term: this.$route.query.type,
@@ -125,7 +125,7 @@
 
             hello(e) {
                 axios
-                    .post('http://localhost:8081/api/yelp', {
+                    .post('/api/yelp', {
                         lat: this.$route.query.lat,
                         long: this.$route.query.long,
                         term: e
@@ -151,7 +151,7 @@
 
         mounted() {
             axios
-                .post('http://localhost:8081/api/yelp', {
+                .post('/api/yelp', {
                     lat:this.$route.query.lat,
                     long:this.$route.query.long,
                     term: this.$route.query.type,

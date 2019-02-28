@@ -74,7 +74,7 @@
 
         mounted() {
             axios
-                .post('http://localhost:8081/api/maps', {
+                .post('/api/maps', {
                     currentLat:this.$route.query.lat,
                     currentLong:this.$route.query.long,
                     destination:this.parames.location.address1 + this.parames.location.city
@@ -111,7 +111,7 @@
                 }
                 if (store.state.user !== '') {
                     axios
-                        .post('http://localhost:8081/api/save-search', {
+                        .post('/api/save-search', {
                             owner: store.state.user.userId,
                             name: this.$route.params.card.name,
                             address: this.info[0].end_address,
