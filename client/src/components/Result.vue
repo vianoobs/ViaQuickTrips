@@ -80,7 +80,7 @@
                     destination:this.parames.location.address1 + this.parames.location.city
                 })
                 .then(response => {
-                    this.info = response.data
+                    this.info = response.data;
                     console.log(response.data)
                 })
         },

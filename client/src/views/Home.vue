@@ -74,9 +74,6 @@
             showPosition(position) {
                 this.lat = position.coords.latitude;
                 this.long = position.coords.longitude;
-                console.log(this.type)
-                console.log(this.lat);
-                console.log(this.long);
             }
         },
 
