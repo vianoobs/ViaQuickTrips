@@ -69,4 +69,4 @@ typings/
 .next
 
 # API Keys:
-dev.js
+config.js

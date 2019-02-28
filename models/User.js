@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+
 // template for all user instances
 const userSchema = new Schema({
     userId: String,
@@ -8,6 +9,6 @@ const userSchema = new Schema({
     displayName: String,
     provider: String
 });
+
 //creates users collection if not exists
 mongoose.model("users", userSchema);
-//# sourceMappingURL=User.js.map
