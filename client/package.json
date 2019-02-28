@@ -16,9 +16,7 @@
     "vue-router": "^3.0.2",
     "vue-uniq-ids": "^1.0.0",
     "vuetify": "^1.5.2",
-    "vuex": "^3.0.1"
-  },
-  "devDependencies": {
+    "vuex": "^3.0.1",
     "@fortawesome/fontawesome-free": "^5.7.2",
     "@vue/cli-service": "^3.1.4",
     "css-loader": "^2.1.0",
