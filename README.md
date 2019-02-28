@@ -39,5 +39,4 @@ Ensure that you are on *your own branch* **before** making edits
 
 ### Editing client side
 *Highlights:*
-- `CSS` is imported into each `.js` file
-- If the `.js` file name is `LoggedOutHeader.jsHeader.js`, the corresponding `CSS` will be `LoggedOutHeader.css`
+- Vue stuff
