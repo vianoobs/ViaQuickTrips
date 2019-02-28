@@ -7,7 +7,7 @@ require('./Services/passportService');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
-const keys = require('./Config/config');
+const keys = require('./Config/dev');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 
