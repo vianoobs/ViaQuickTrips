@@ -9,7 +9,7 @@ module.exports = (app) => {
     }));
 
     app.get("/auth/google/callback", passport.authenticate("google"), (req, res) => {
-        res.redirect("http://localhost:8080")
+        res.redirect("/")
     });
     // request here on root mount to see if logged in
     app.options("/api/user", cors());
