@@ -9,9 +9,9 @@ To get started with this project, follow these steps:
 - To install server side dependencies, run `npm install` from the `root` directory, `ViaQuickTripss/` 
 - Next, find the `client/` directory with `cd client/`
 - From the `client/` directory, run `npm install` to add the necessary client side dependencies for this project
-### Starting the servers
 - Locate the `Config/` directory, with `cd Config/` executed from `ViaQuickTrips/`
     - Follow the example in `sampleConfig.js` to add your own API Keys for the project
+### Starting the servers
 - To start both the back-end and client server, run `npm run dev` from `ViaQuickTrips/`
     - The back-end server runs on `localhost:8081`
     - The client server runs on `localhost:8080`
