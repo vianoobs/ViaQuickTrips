@@ -33,11 +33,11 @@ if (process.env.NODE_ENV === "production") {
     // look inside client/build to serve assets
     app.use(express.static('client/dist'));
 
-    // express will serve index.html if it doesnt recognize route
+    // express will serve index.html if it doesn't recognize route
     const path = require('path');
     app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname + '/client/dist/index.html'));
-
+        console.log("request is happening");
+        res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
     })
 }
 
