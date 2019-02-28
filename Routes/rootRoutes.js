@@ -15,7 +15,7 @@ module.exports = (app) => {
 
     const PORT = process.env.PORT || 8081;
     app.listen(PORT, () => {
-        console.log("Skynet is active on " + port);
+        console.log("Skynet is active on " + PORT);
     });
 
 };
