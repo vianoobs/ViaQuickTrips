@@ -7,7 +7,10 @@ const bodyParams = requestBody => {
     return {
         owner: requestBody.owner,
         name: requestBody.name,
-        address: requestBody.address
+        address: requestBody.address,
+        imgURL: requestBody.imgURL,
+        URL: requestBody.URL,
+        googleURL: requestBody.googleURL
     }
 };
 
@@ -19,7 +22,7 @@ module.exports = app => {
     });
 
     // get search history
-    app.get("/api/show-search", (req, res) => {
+    app.post("/api/show-search", (req, res) => {
         console.log(req.body.owner);
         Route.find({owner: req.body.owner}).then(dbResponse => {
             res.send(dbResponse);

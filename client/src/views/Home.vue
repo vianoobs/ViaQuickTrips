@@ -8,13 +8,13 @@
             ></v-progress-circular>
         <v-container grid-list-xl fill-height>
             <v-layout column align-center justify-center>
-                <v-btn color="red accent-4" class="home-button" large v-on:click="locate(food)">
+                <v-btn color="red accent-4" class="home-button" large v-on:click="searchType(food)">
                     <v-title class="button-text">Find Food</v-title>
                     <v-icon class="fa">fas fa-utensils</v-icon></v-btn>
-                <v-btn color="red accent-4" class="home-button" large v-on:click="locate(drink)">
+                <v-btn color="red accent-4" class="home-button" large v-on:click="searchType(drink)">
                     <div class="button-text">Find Drinks</div>
                     <v-icon class="fa">fas fa-coffee</v-icon></v-btn>
-                <v-btn color="red accent-4" class="home-button" large v-on:click="locate(attraction)">
+                <v-btn color="red accent-4" class="home-button" large v-on:click="searchType(attraction)">
                     <div class="button-text">Find Attractions</div>
                     <v-icon class="fa">fas fa-map-marked-alt</v-icon></v-btn>
             </v-layout>
@@ -65,12 +65,10 @@
 
         //methods
         methods: {
-            locate(type) {
-                this.loading = true;
+
+            searchType(type){
                 this.type = type;
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(this.showPosition);
-                }
+                router.push({path: 'selection', query: {type: this.type, lat: this.lat, long: this.long}})
             },
 
             showPosition(position) {
@@ -79,12 +77,16 @@
                 console.log(this.type)
                 console.log(this.lat);
                 console.log(this.long);
-                router.push({path: 'selection', query: {type: this.type, lat: this.lat, long: this.long}})
             }
         },
 
         //mount
         mounted() {
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.showPosition);
+            }
+
             axios
                 .get('/api/user', { withCredentials: true }).then(res => {
                 store.commit('changeUser', res.data);

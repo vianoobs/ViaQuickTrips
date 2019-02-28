@@ -28,7 +28,7 @@
                         </v-btn-toggle>
                     </v-flex>
                 </v-layout>
-                <v-card v-for="(resultCard, key) in info.businesses">
+                <v-card id="cardSheet" v-for="(resultCard) in info.businesses">
                     <div>
                         <v-img :src="resultCard.image_url" aspect-ratio="5"></v-img>
                         <v-card-title>
@@ -171,6 +171,12 @@
         font-weight: bold;
         fill: red;
         padding-bottom: 2vh;
+    }
+
+    #cardSheet {
+        margin-bottom: .7em;
+        border: solid white 2px;
+        border-radius: 4px;
     }
 
     .v-btn__content > svg {
