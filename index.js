@@ -28,6 +28,17 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((userOptions, done) => {
     done(null, userOptions)
 });
+if (process.env.NODE_ENV === "production") {
+    // express will serve production assets ( main.js, main.css )
+    // look inside client/build to serve assets
+    app.use(express.static('client/dist'));
+
+    // express will serve index.html if it doesnt recognize route
+    const path = require('path');
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+    })
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
