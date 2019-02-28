@@ -19,7 +19,7 @@ module.exports = app => {
     });
 
     // get search history
-    app.get("/api/show-search", (req, res) => {
+    app.post("/api/show-search", (req, res) => {
         console.log(req.body.owner);
         Route.find({owner: req.body.owner}).then(dbResponse => {
             res.send(dbResponse);
