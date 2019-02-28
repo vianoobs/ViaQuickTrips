@@ -37,9 +37,6 @@
 
 <script>
 
-    import axios from "axios";
-    // import {weatherData} from "./weatherData";
-
     import { store } from '../store/store';
 
     export default {
@@ -52,8 +49,6 @@
 
         methods: {
             logout(){
-                console.log("logged out");
-                console.log(this.value)
                 store.commit('logoutUser', '');
             }
         },
@@ -64,8 +59,6 @@
             },
 
             user() {
-                console.log(store.state.user)
-                console.log(this.value)
                 return store.state.user
             }
         },

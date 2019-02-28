@@ -28,6 +28,14 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((userOptions, done) => {
     done(null, userOptions)
 });
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./Routes/rootRoutes')(app);
 if (process.env.NODE_ENV === "production") {
     // express will serve production assets ( main.js, main.css )
     // look inside client/build to serve assets
@@ -40,13 +48,10 @@ if (process.env.NODE_ENV === "production") {
         res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
     })
 }
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-require('./Routes/rootRoutes')(app);
+const PORT = process.env.PORT || 8081;
+app.listen(PORT, () => {
+    console.log("Skynet is active on " + PORT);
+});
 
 
 
