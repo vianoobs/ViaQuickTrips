@@ -7,7 +7,10 @@ const bodyParams = requestBody => {
     return {
         owner: requestBody.owner,
         name: requestBody.name,
-        address: requestBody.address
+        address: requestBody.address,
+        imgURL: requestBody.imgURL,
+        URL: requestBody.URL,
+        googleURL: requestBody.googleURL
     }
 };
 

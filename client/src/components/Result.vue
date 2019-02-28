@@ -4,7 +4,7 @@
             <v-layout>
                 <v-flex xs12 sm10 offset-sm1>
                     <v-title class="display-2 white--text">{{parames.name}}</v-title>
-                    <v-card>
+                    <v-card id="cardSheet">
                         <v-img :src="parames.image_url" aspect-ratio="2"></v-img>
                         <v-card-title>
                             <v-layout row justify-space-around><div>
@@ -96,22 +96,10 @@
             },
 
             url(){
-                if (store.state.user != '') {
-                    axios
-                        .post('http://localhost:8081/api/save-search', {
-                            owner: store.state.user.userId,
-                            name: this.$route.params.card.name,
-                            address: this.info[0].end_address,
-                            imgURL: this.$route.params.card.image_url
-                        }).then(res => {
-                        console.log(res.data)
-                    });
-                }
-
                 let url ="";
-                if( (navigator.platform.indexOf("iPhone") != -1)
-                    || (navigator.platform.indexOf("iPod") != -1)
-                    || (navigator.platform.indexOf("iPad") != -1))
+                if( (navigator.platform.indexOf("iPhone") !== -1)
+                    || (navigator.platform.indexOf("iPod") !== -1)
+                    || (navigator.platform.indexOf("iPad") !== -1))
                     url = "comgooglemaps://?daddr=" + this.info[0].end_address.split(" ").join("+") + "&directionsmode=transit";
                 else {
                     url = "https://www.google.com/maps/dir/?api=1&destination=" + this.info[0].end_address.split(",").join("%2C").split(" ").join("+") + "&travelmode=transit&dir_action=navigate";
@@ -121,6 +109,20 @@
                     );
 
                 }
+                if (store.state.user !== '') {
+                    axios
+                        .post('http://localhost:8081/api/save-search', {
+                            owner: store.state.user.userId,
+                            name: this.$route.params.card.name,
+                            address: this.info[0].end_address,
+                            imgURL: this.$route.params.card.image_url,
+                            URL: this.$route.params.card.url,
+                            googleURL: url
+                        }).then(res => {
+                        console.log(res.data)
+                    });
+                }
+
                 return url
             }
         }
@@ -142,6 +144,11 @@
     .resultBorder{
         box-shadow: 1px 3px 7px 0px #333a41;
         border-radius: .5em;
+    }
+    #cardSheet {
+        margin-bottom: .7em;
+        border: solid white 2px;
+        border-radius: 4px;
     }
 </style>
 

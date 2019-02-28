@@ -5,7 +5,10 @@ const { Schema } = mongoose;
 const routesSchema = new Schema({
     owner: String,
     name: String,
-    address: String
+    address: String,
+    imageURL: String,
+    URL: String,
+    googleURL: String,
 });
 
 //creates users collection if not exists

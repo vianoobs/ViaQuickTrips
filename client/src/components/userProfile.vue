@@ -17,14 +17,21 @@
                         </v-layout>
                     </v-img>
                     <v-card-actions class="white justify-center">
-                        <v-btn  v-for="(social, i) in socials"
-                                :key="i"
-                                :color="social.color"
+                        <v-btn :href="card.googleURL" target="_blank"
+                                color = "#42b883"
                                 class="white--text"
                                 fab
                                 icon
                                 small>
-                            <v-icon>{{social.icon}}</v-icon>
+                            <v-icon>fas fa-map-marked-alt</v-icon>
+                        </v-btn>
+                        <v-btn :href="card.URL" target="_blank"
+                               color="red accent-4"
+                               class="white--text"
+                               fab
+                               icon
+                               small>
+                            <v-icon>fab fa-yelp</v-icon>
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -47,6 +54,10 @@
                     {
                         icon: 'fab fa-yelp',
                         color: 'red accent-4'
+                    },
+                    {
+                        icon: "fas fa-map-marked-alt",
+                        color:"#42b883"
                     }
                 ]
             }
@@ -65,5 +76,11 @@
 </script>
 
 <style scoped>
+
+    .v-btn--floating.v-btn--small .v-icon {
+        font-size: 21px;
+        margin-left: 9px;
+        margin-top: 17px;
+    }
 
 </style>
