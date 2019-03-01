@@ -13,22 +13,22 @@
                               color="red accent-4" class="py-1 ml-3" label="Categories"></v-select>
                     <v-flex xs12 sm6 class="py-2">
                         <v-btn-toggle exclusive class="m-0">
-                            <v-btn v-on:click="sort(1)" flat class="py-1">
+                            <v-btn v-on:click="sort('$')" flat class="py-1">
                                 <v-icon>$</v-icon>
                             </v-btn>
-                            <v-btn v-on:click="sort(2)" flat class="py-1">
+                            <v-btn v-on:click="sort('$$')" flat class="py-1">
                                 <v-icon>$$</v-icon>
                             </v-btn>
-                            <v-btn v-on:click="sort(3)" flat class="py-1">
+                            <v-btn v-on:click="sort('$$$')" flat class="py-1">
                                 <v-icon>$$$</v-icon>
                             </v-btn>
-                            <v-btn v-on:click="sort(4)" flat class="py-1">
+                            <v-btn v-on:click="sort('$$$$')" flat class="py-1">
                                 <v-icon>$$$$</v-icon>
                             </v-btn>
                         </v-btn-toggle>
                     </v-flex>
                 </v-layout>
-                <v-card id="cardSheet" v-for="(resultCard) in yelpResults.businesses">
+                <v-card id="cardSheet" v-for="(resultCard) in info">
                     <div>
                         <v-img :src="resultCard.image_url" aspect-ratio="5"></v-img>
                         <v-card-title>
@@ -92,13 +92,12 @@
                 food : ['Asian Fusion', 'Mexican', 'Pizza', 'Burgers', 'Italian', 'Restaurants', 'Fast Food', 'Vegetarian', 'Vegan'],
                 drink : ['Juice Bars & Smoothies', 'Lounges', 'Dive Bars', 'Beer Bar', 'Cocktail Bars', 'Coffee', 'Wine Bar'],
                 attraction : ['Art & Entertainment', 'Arcades', 'Tours', 'Music Venues', 'Parks', 'Amusement Parks', 'Landmarks & Historical Buildings', 'Performing Arts'],
-                info : ""
+                info : '',
             }
         },
 
         //computed
         computed: {
-
             type() {
             return this.$route.query.type
             },
@@ -109,25 +108,17 @@
 
             yelpResults() {
                 return store.state.yelpFullResult
-            }
-
-
+            },
         },
 
         // method
         methods:{
             sort(dollars) {
-                axios
-                    .post('http://localhost:8081/api/yelp', {
-                        lat: store.state.direction.lat,
-                        long: store.state.direction.long,
-                        term: this.$route.query.type,
-                        price: dollars
-                    })
-                    .then(response => {
-                        store.commit('changeYelpFullList', response.data);
-                        console.log(store.state.yelpFullResult())
-                    })
+                this.info = [];
+                console.log(this.yelpResults.businesses);
+                console.log(this.yelpResults);
+                this.info = this.yelpResults.businesses.filter(business => business.price === dollars)
+                console.log(this.info)
             },
 
             hello(e) {
@@ -139,6 +130,7 @@
                     })
                     .then(response => {
                         store.commit('changeYelpFullList', response.data);
+                        this.info = this.yelpResults.businesses;
                         console.log(store.state.yelpFullResult())
                     })
             },
@@ -151,7 +143,7 @@
                     name: 'routepreview',
                     query: {type: this.type}
                 })
-            }
+            },
         },
 
         mounted() {
@@ -164,9 +156,10 @@
                 })
                 .then(response => {
                     store.commit('changeYelpFullList', response.data);
-                    console.log(store.state.yelpFullResult)
+                    this.info = this.yelpResults.businesses;
+                    console.log(this.info)
                 })
-        }
+        },
     }
 </script>
 
