@@ -43,8 +43,6 @@
                 food: "Food",
                 drink :"Drinks",
                 attraction : "Attractions",
-                lat : "",
-                long : "",
                 type : "type",
             }
         },
@@ -60,6 +58,16 @@
                 set (value) {
                     store.commit('changeUser', value)
                 }
+            },
+
+            direction: {
+                get () {
+                    return store.state.direction
+                },
+
+                set (lat, long) {
+                    store.commit('changeDirection', lat, long)
+                }
             }
         },
 
@@ -68,12 +76,12 @@
 
             searchType(type){
                 this.type = type;
-                router.push({path: 'selection', query: {type: this.type, lat: this.lat, long: this.long}})
+                router.push({path: 'selection', query: {type: this.type}})
             },
 
             showPosition(position) {
-                this.lat = position.coords.latitude;
-                this.long = position.coords.longitude;
+                store.commit('changeDirection', {lat: position.coords.latitude, long: position.coords.longitude});
+                // console.log(store.state.direction)
             }
         },
 

@@ -20,7 +20,7 @@ export default new Router({
             },
         },
         {
-            path: '/routepreview/:card',
+            path: '/routepreview/',
             name: 'routepreview',
             component: function () { return import('./views/RoutePreview.vue');
             },

@@ -3,23 +3,23 @@
         <v-container>
             <v-layout>
                 <v-flex xs12 sm10 offset-sm1>
-                    <v-title class="display-2 white--text">{{parames.name}}</v-title>
+                    <v-title class="display-2 white--text">{{card.name}}</v-title>
                     <v-card id="cardSheet">
-                        <v-img :src="parames.image_url" aspect-ratio="2"></v-img>
+                        <v-img :src="card.image_url" aspect-ratio="2"></v-img>
                         <v-card-title>
                             <v-layout row justify-space-around><div>
-                                <v-title class="headline"><a v-bind:href="parames.url" target="_blank">{{parames.name}}</a></v-title>
+                                <v-title class="headline"><a v-bind:href="card.url" target="_blank">{{card.name}}</a></v-title>
                                 <div>Estimated Time</div>
-                                <div>{{Math.round(((parames.distance * 0.000621371) * 20))}} Min</div>
+                                <div>{{Math.round(((card.distance * 0.000621371) * 20))}} Min</div>
                             </div>
                                 <div>
-                                    <v-rating small half-increments color="red accent-4" background-color="#42b883" v-model="parames.rating"></v-rating>
-                                    <div>Distance: {{(parames.distance * 0.000621371).toFixed(2)}} Miles</div>
-                                    <div>PRICE: {{parames.price}}</div>
+                                    <v-rating small half-increments color="red accent-4" background-color="#42b883" v-model="card.rating"></v-rating>
+                                    <div>Distance: {{(card.distance * 0.000621371).toFixed(2)}} Miles</div>
+                                    <div>PRICE: {{card.price}}</div>
                                 </div>
                             </v-layout>
                         </v-card-title>
-                        <v-container v-for="(transit, key) in info[0].steps" fill-height fluid class="red accent-4 resultP">
+                        <v-container v-for="(transit) in google[0].steps" fill-height fluid class="red accent-4 resultP">
                             <v-container fill-height fluid class="white resultBorder">
                                 <v-layout>
                                     <v-icon v-if="travelPic(transit.travel_mode) === 1" color="red accent-4">fas fa-bus</v-icon>
@@ -58,35 +58,43 @@
             store
         },
 
-        //data
-        data () {
-            return {
-                info: ''
-            }
-        },
-
         computed: {
-            parames(){
-                console.log(this.$route.params.card)
-                return this.$route.params.card
+
+            card: {
+                get () {
+                    return store.state.singleResult
+                },
+
+                set (value) {
+                    store.commit('changeSingleResult', value)
+                }
+            },
+
+            google: {
+                get () {
+                    return store.state.google
+                },
+
+                set (value) {
+                    store.commit('changeGoogleResult', value)
+                }
             }
         },
 
         mounted() {
             axios
                 .post('/api/maps', {
-                    currentLat:this.$route.query.lat,
-                    currentLong:this.$route.query.long,
-                    destination:this.parames.location.address1 + this.parames.location.city
+                    currentLat:store.state.direction.lat,
+                    currentLong:store.state.direction.long,
+                    destination:this.card.location.address1 + this.card.location.city
                 })
                 .then(response => {
-                    this.info = response.data;
-                    console.log(response.data)
+                    store.commit("changeGoogleResult", response.data)
+                    // console.log(store.state.google)
                 })
         },
 
         methods: {
-
             travelPic(e){
                 if (e === 'TRANSIT') {
                     return 1
@@ -100,26 +108,25 @@
                 if( (navigator.platform.indexOf("iPhone") !== -1)
                     || (navigator.platform.indexOf("iPod") !== -1)
                     || (navigator.platform.indexOf("iPad") !== -1))
-                    url = "comgooglemaps://?daddr=" + this.info[0].end_address.split(" ").join("+") + "&directionsmode=transit";
+                    url = "comgooglemaps://?daddr=" + this.google[0].end_address.split(" ").join("+") + "&directionsmode=transit";
                 else {
-                    url = "https://www.google.com/maps/dir/?api=1&destination=" + this.info[0].end_address.split(",").join("%2C").split(" ").join("+") + "&travelmode=transit&dir_action=navigate";
+                    url = "https://www.google.com/maps/dir/?api=1&destination=" + this.google[0].end_address.split(",").join("%2C").split(" ").join("+") + "&travelmode=transit&dir_action=navigate";
                     window.open(
                         url,
                         '_blank' // <- This is what makes it open in a new window.
                     );
-
                 }
                 if (store.state.user !== '') {
                     axios
                         .post('/api/save-search', {
                             owner: store.state.user.userId,
-                            name: this.$route.params.card.name,
-                            address: this.info[0].end_address,
-                            imgURL: this.$route.params.card.image_url,
-                            URL: this.$route.params.card.url,
+                            name: this.card.name,
+                            address: this.google[0].end_address,
+                            imgURL: this.card.image_url,
+                            URL: this.card.url,
                             googleURL: url
                         }).then(res => {
-                        console.log(res.data)
+                        // console.log(res.data)
                     });
                 }
 

@@ -38,14 +38,11 @@
         <v-spacer></v-spacer>
         <Login></Login>
         <v-toolbar-title>
-            <!--<span><Weather></Weather></span>-->
         </v-toolbar-title>
     </v-toolbar>
 </template>
 
 <script >
-
-    // import Weather from "../components/Weather.vue";
     import Login from "@/components/Login.vue";
     import router from "../router";
 
