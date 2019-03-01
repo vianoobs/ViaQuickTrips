@@ -83,7 +83,7 @@
 
         mounted() {
             axios
-                .post('http://localhost:8081/api/maps', {
+                .post('/api/maps', {
                     currentLat:store.state.direction.lat,
                     currentLong:store.state.direction.long,
                     destination:this.card.location.address1 + this.card.location.city
@@ -118,7 +118,7 @@
                 }
                 if (store.state.user !== '') {
                     axios
-                        .post('http://localhost:8081/api/save-search', {
+                        .post('/api/save-search', {
                             owner: store.state.user.userId,
                             name: this.card.name,
                             address: this.google[0].end_address,

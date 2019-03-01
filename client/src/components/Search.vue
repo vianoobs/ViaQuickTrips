@@ -115,15 +115,15 @@
         methods:{
             sort(dollars) {
                 this.info = [];
-                console.log(this.yelpResults.businesses);
-                console.log(this.yelpResults);
+                // console.log(this.yelpResults.businesses);
+                // console.log(this.yelpResults);
                 this.info = this.yelpResults.businesses.filter(business => business.price === dollars)
                 // console.log(this.info)
             },
 
             hello(e) {
                 axios
-                    .post('http://localhost:8081/api/yelp', {
+                    .post('/api/yelp', {
                         lat: store.state.direction.lat,
                         long: store.state.direction.long,
                         term: e
@@ -147,8 +147,8 @@
 
         mounted() {
             axios
-                .post('http://localhost:8081/api/yelp', {
-                    lat: store.state.direction.lat,
+                .post('/api/yelp', {
+                     lat: store.state.direction.lat,
                     long: store.state.direction.long,
                     term: this.$route.query.type,
                     radius: '8000'

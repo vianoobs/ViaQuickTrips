@@ -1,6 +1,6 @@
 .idea
 node_modules
-config.js
+dev.js
 
 # Logs
 logs
@@ -69,4 +69,4 @@ typings/
 .next
 
 # API Keys:
-config.js
+dev.js

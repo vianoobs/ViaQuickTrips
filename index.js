@@ -29,12 +29,29 @@ passport.deserializeUser((userOptions, done) => {
     done(null, userOptions)
 });
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 require('./Routes/rootRoutes')(app);
+if (process.env.NODE_ENV === "production") {
+    // express will serve production assets ( main.js, main.css )
+    // look inside client/build to serve assets
+    app.use(express.static('client/dist'));
+
+    // express will serve index.html if it doesn't recognize route
+    const path = require('path');
+    app.get("*", (req, res) => {
+        console.log("request is happening");
+        res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+    })
+}
+const PORT = process.env.PORT || 8081;
+app.listen(PORT, () => {
+    console.log("Skynet is active on " + PORT);
+});
 
 
 

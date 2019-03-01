@@ -65,7 +65,7 @@
 
         mounted() {
             axios
-                .post('http://localhost:8081/api/show-search', {
+                .post('/api/show-search', {
                     owner: store.state.user.userId
                 }).then(res => {
                     this.cardz = res.data;

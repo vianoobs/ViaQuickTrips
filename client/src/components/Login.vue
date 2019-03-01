@@ -15,10 +15,10 @@
                 </v-card-title>
 
                 <v-card-text class="social-login-button-container">
-                    <a href="http://localhost:8081/api/auth/google"><v-btn color="red" class="social-login-button google"><span class="social-name">Google</span>
+                    <a href="/api/auth/google"><v-btn color="red" class="social-login-button google"><span class="social-name">Google</span>
                         <v-icon class="social-icon">fab fa-google</v-icon></v-btn>
                     </a>
-                    <a href="http://localhost:8081/auth/facebook"><v-btn color="blue" class="social-login-button facebook"><span class="social-name">Facebook</span>
+                    <a href="/auth/facebook"><v-btn color="blue" class="social-login-button facebook"><span class="social-name">Facebook</span>
                         <v-icon class="social-icon">fab fa-facebook</v-icon>
                     </v-btn>
                     </a>
@@ -49,8 +49,6 @@
 
         methods: {
             logout(){
-                console.log("logged out");
-                // console.log(this.value)
                 store.commit('logoutUser', '');
             }
         },
@@ -61,8 +59,6 @@
             },
 
             user() {
-                console.log(store.state.user)
-                // console.log(this.value)
                 return store.state.user
             }
         },

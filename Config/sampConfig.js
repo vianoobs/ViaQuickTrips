@@ -1,4 +1,9 @@
-export const apiConfig = {
+// all of the keys this application uses
+
+// create a file named `dev.js` inside of this directory and follow the pattern below
+// the production keys will be set by your hosting service. Just make sure the names match exactly
+
+module.exports = {
     yelpApi: "yelp-api",
     googleApi: "google-api",
     keys: "some-crazy-madeup-stuff",
