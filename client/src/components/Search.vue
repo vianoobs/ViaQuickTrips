@@ -7,9 +7,9 @@
                 <v-layout row wrap class="results-row">
                     <v-select v-on:change="hello" v-if="this.$route.query.type === 'Food'" :items="food" dark
                               color="red accent-4" class="py-1 ml-3" label="Categories"></v-select>
-                    <v-select v-if="this.$route.query.type === 'Drinks'" :items="drink" dark color="red accent-4"
+                    <v-select v-on:change="hello" v-if="this.$route.query.type === 'Drinks'" :items="drink" dark color="red accent-4"
                               class="py-1 ml-3" label="Categories"></v-select>
-                    <v-select v-if="this.$route.query.type === 'Attractions'" :items="attraction" dark
+                    <v-select v-on:change="hello" v-if="this.$route.query.type === 'Attractions'" :items="attraction" dark
                               color="red accent-4" class="py-1 ml-3" label="Categories"></v-select>
                     <v-flex xs12 sm6 class="py-2">
                         <v-btn-toggle exclusive class="m-0">
@@ -28,7 +28,7 @@
                         </v-btn-toggle>
                     </v-flex>
                 </v-layout>
-                <v-card id="cardSheet" v-for="(resultCard) in info.businesses">
+                <v-card id="cardSheet" v-for="(resultCard) in yelpResults.businesses">
                     <div>
                         <v-img :src="resultCard.image_url" aspect-ratio="5"></v-img>
                         <v-card-title>
@@ -78,8 +78,13 @@
 <script>
     import axios, {AxiosResponse} from "axios";
     import router from "../router";
+    import { store } from '../store/store';
 
     export default  {
+
+        components: {
+            store
+        },
 
         //data
         data() {
@@ -98,13 +103,15 @@
             return this.$route.query.type
             },
 
-            lat() {
-            return this.$route.query.lat
+            direction() {
+                return store.state.direction
             },
 
-            long() {
-                return this.$route.query.long
+            yelpResults() {
+                return store.state.yelpFullResult
             }
+
+
         },
 
         // method
@@ -112,39 +119,37 @@
             sort(dollars) {
                 axios
                     .post('http://localhost:8081/api/yelp', {
-                        lat: this.$route.query.lat,
-                        long: this.$route.query.long,
+                        lat: store.state.direction.lat,
+                        long: store.state.direction.long,
                         term: this.$route.query.type,
                         price: dollars
                     })
                     .then(response => {
-                        this.info = response.data
-                        console.log(response.data)
+                        store.commit('changeYelpFullList', response.data);
+                        console.log(store.state.yelpFullResult())
                     })
             },
 
             hello(e) {
                 axios
                     .post('http://localhost:8081/api/yelp', {
-                        lat: this.$route.query.lat,
-                        long: this.$route.query.long,
+                        lat: store.state.direction.lat,
+                        long: store.state.direction.long,
                         term: e
                     })
                     .then(response => {
-                        this.info = response.data;
-                        console.log(response.data)
+                        store.commit('changeYelpFullList', response.data);
+                        console.log(store.state.yelpFullResult())
                     })
             },
 
             result(e) {
-                console.log(this.type);
-                console.log(this.lat);
-                console.log(this.long);
                 console.log(e)
+                store.commit('changeSingleResult', e);
+                console.log(store.state.singleResult)
                 router.push({
                     name: 'routepreview',
-                    params: {card: e},
-                    query: {type: this.type, lat: this.lat, long: this.long}
+                    query: {type: this.type}
                 })
             }
         },
@@ -152,14 +157,14 @@
         mounted() {
             axios
                 .post('http://localhost:8081/api/yelp', {
-                    lat:this.$route.query.lat,
-                    long:this.$route.query.long,
+                    lat: store.state.direction.lat,
+                    long: store.state.direction.long,
                     term: this.$route.query.type,
                     radius: '8000'
                 })
                 .then(response => {
-                    this.info = response.data
-                    console.log(response.data)
+                    store.commit('changeYelpFullList', response.data);
+                    console.log(store.state.yelpFullResult)
                 })
         }
     }

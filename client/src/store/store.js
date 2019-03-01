@@ -17,17 +17,35 @@ export const store = new Vuex.Store({
     state:{
         // Current state of the application lies here.
         isLoading: false,
-        user: ''
+        user: '',
+        yelpFullResult: '',
+        singleResult: '',
+        direction: {lat: '', long: ''},
+        google: '',
     },
     getters:{
         // Compute derived state based on the current state. More like computed property.
-        budgetList: state => {
-            return state.budgetRows;
+        user: state => {
+            return state.user;
+        },
+        yelpFullResult: state => {
+            return state.yelpFullResult;
+        },
+        yelpSingleResult: state => {
+            return state.singleResult;
+        },
+        directionLat: state => {
+            return state.direction.lat;
+        },
+        directionLong: state => {
+            return state.direction.long;
+        },
+        googleResult: state => {
+            return state.google;
         },
     },
     mutations:{
         // Mutate the current state
-
         commitSetIsLoading(e) {
             state.isLoading = e;
         },
@@ -41,32 +59,27 @@ export const store = new Vuex.Store({
             axios.get('/api/logout').then(res => {
                         console.log(res)
                     })
-        }
+        },
 
+        changeYelpFullList(state, results) {
+            state.yelpFullResult = results;
+        },
+
+        changeSingleResult(state, single){
+            state.singleResult = single;
+        },
+
+        changeGoogleResult(state, google){
+            state.google = google;
+        },
+
+        changeDirection(state, {lat, long}){
+            state.direction.lat = lat;
+            state.direction.long = long;
+            console.log(long)
+        }
     },
     actions:{
-        // Get data from server and send that to mutations to mutate the current state
 
-        // login(payload) {
-        //     try {
-        //         store.commitSetIsLoading(true);
-        //
-        //         console.log('login');
-        //         const userRes = payload;
-        //
-        //         store.commitSetUser(userRes)
-        //
-        //     } finally {
-        //         auth.commitSetIsLoading({isLoading: false})
-        //     }
-        // },
-        //
-        // logout() {
-        //     console.log('logout');
-        //     commitSetUser({user: {}});
-        //     axios.get('/api/logout').then(res => {
-        //         console.log(res)
-        //     })
-        // }
     }
 });
