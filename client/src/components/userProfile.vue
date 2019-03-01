@@ -69,7 +69,7 @@
                     owner: store.state.user.userId
                 }).then(res => {
                     this.cardz = res.data;
-                    console.log(res.data)
+                    // console.log(res.data)
             });
         }
     }

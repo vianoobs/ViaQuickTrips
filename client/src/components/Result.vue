@@ -90,7 +90,7 @@
                 })
                 .then(response => {
                     store.commit("changeGoogleResult", response.data)
-                    console.log(store.state.google)
+                    // console.log(store.state.google)
                 })
         },
 
@@ -126,7 +126,7 @@
                             URL: this.card.url,
                             googleURL: url
                         }).then(res => {
-                        console.log(res.data)
+                        // console.log(res.data)
                     });
                 }
 

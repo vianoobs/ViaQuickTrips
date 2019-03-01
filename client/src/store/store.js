@@ -57,7 +57,7 @@ export const store = new Vuex.Store({
         logoutUser (state, user) {
             state.user = user;
             axios.get('/api/logout').then(res => {
-                        console.log(res)
+                        // console.log(res)
                     })
         },
 
@@ -76,7 +76,7 @@ export const store = new Vuex.Store({
         changeDirection(state, {lat, long}){
             state.direction.lat = lat;
             state.direction.long = long;
-            console.log(long)
+            // console.log(long)
         }
     },
     actions:{

@@ -81,7 +81,7 @@
 
             showPosition(position) {
                 store.commit('changeDirection', {lat: position.coords.latitude, long: position.coords.longitude});
-                console.log(store.state.direction)
+                // console.log(store.state.direction)
             }
         },
 

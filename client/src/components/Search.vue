@@ -118,7 +118,7 @@
                 console.log(this.yelpResults.businesses);
                 console.log(this.yelpResults);
                 this.info = this.yelpResults.businesses.filter(business => business.price === dollars)
-                console.log(this.info)
+                // console.log(this.info)
             },
 
             hello(e) {
@@ -131,14 +131,13 @@
                     .then(response => {
                         store.commit('changeYelpFullList', response.data);
                         this.info = this.yelpResults.businesses;
-                        console.log(store.state.yelpFullResult())
+                        // console.log(store.state.yelpFullResult())
                     })
             },
 
             result(e) {
-                console.log(e)
                 store.commit('changeSingleResult', e);
-                console.log(store.state.singleResult)
+                // console.log(store.state.singleResult)
                 router.push({
                     name: 'routepreview',
                     query: {type: this.type}
@@ -157,7 +156,7 @@
                 .then(response => {
                     store.commit('changeYelpFullList', response.data);
                     this.info = this.yelpResults.businesses;
-                    console.log(this.info)
+                    // console.log(this.info)
                 })
         },
     }
