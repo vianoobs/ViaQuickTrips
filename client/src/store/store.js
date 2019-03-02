@@ -4,15 +4,6 @@ import axios, {AxiosResponse} from "axios";
 
 Vue.use(Vuex);
 
-// creates a unique ID
-const uniqId = () => {
-    const timestamp = (new Date().getTime() / 1000 | 0).toString(16);
-    return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, () => {
-        return (Math.random() * 16 | 0).toString(16);
-    }).toLowerCase();
-};
-
-
 export const store = new Vuex.Store({
     state:{
         // Current state of the application lies here.

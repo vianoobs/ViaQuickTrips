@@ -104,18 +104,12 @@
             },
 
             url(){
-                let url ="";
-                if( (navigator.platform.indexOf("iPhone") !== -1)
-                    || (navigator.platform.indexOf("iPod") !== -1)
-                    || (navigator.platform.indexOf("iPad") !== -1))
-                    url = "comgooglemaps://?daddr=" + this.google[0].end_address.split(" ").join("+") + "&directionsmode=transit";
-                else {
-                    url = "https://www.google.com/maps/dir/?api=1&destination=" + this.google[0].end_address.split(",").join("%2C").split(" ").join("+") + "&travelmode=transit&dir_action=navigate";
-                    window.open(
-                        url,
-                        '_blank' // <- This is what makes it open in a new window.
-                    );
-                }
+                let url = "https://www.google.com/maps/dir/?api=1&destination=" + this.google[0].end_address.split(",").join("%2C").split(" ").join("+") + "&travelmode=transit&dir_action=navigate";
+                window.open(
+                    url,
+                    '_blank' // <- This is what makes it open in a new window.
+                );
+
                 if (store.state.user !== '') {
                     axios
                         .post('/api/save-search', {
